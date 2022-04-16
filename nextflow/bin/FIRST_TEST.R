@@ -15,3 +15,6 @@ args <- parser$parse_args()
 print(args)
 
 source("/home/unix/owright/utils/base_functions.R")
+
+print(getwd())
+print('Done')

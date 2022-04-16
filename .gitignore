@@ -1,2 +1,5 @@
 ./nextflow/.nextflow
 .nextflow
+.nextflow.log*
+./nextflow/work
+work
