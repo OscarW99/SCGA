@@ -1,0 +1,7 @@
+Previously I have used the following filtering parameters for sc analysis...
+nFeature_RNA > 400 & nCount_RNA > 1000 & percent.mt < 25
+
+I know that it differs between human and mouse and also based on the sequencing chemistry: v1, v2, v3.
+
+http://dx.doi.org/10.1093/bioinformatics/btaa751 - "Based on the results, we suggest a standardized mtDNA% threshold of 10% for scRNA-seq QC of human samples. For mouse samples, we found that the early defined 5% threshold accurately discriminates between healthy and apoptotic cells."
+
