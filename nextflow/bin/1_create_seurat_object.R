@@ -34,10 +34,13 @@ parser$add_argument("-d", "--data_directory", type="character", dest="data_direc
 args <- parser$parse_args()
 data_directory <- args$data_directory
 
+<<<<<<< HEAD
 #! del these
 data_directory <- '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/data'
 #!
 
+=======
+>>>>>>> bc4da0c6c7a9ecad6971516352f9be8305589a8d
 
 # Import libraries
 library(Seurat)
@@ -48,19 +51,32 @@ library(Seurat)
 
 
 patient_folders <- list.dirs(data_directory, full.names = TRUE, recursive = FALSE)
+<<<<<<< HEAD
 
 seurat_object_holder <- list()
+=======
+seurat_object_holder = c("", length=length(patient_folders))
+
+seurat_object_holder <- vector(mode="character", length=length(patient_folders))
+
+
+>>>>>>> bc4da0c6c7a9ecad6971516352f9be8305589a8d
 
 for (i in 1:length(patient_folders)) {
     patient <- patient_folders[i]
 	sparce_matrix <- Read10X(data.dir=paste0(patient_folders, "/filtered_feature_bc_matrix"))
 	seurat_obj <- CreateSeuratObject(sparce_matrix)
+<<<<<<< HEAD
 	sample_id <- basename(patient_folders[i])
+=======
+	sample_id <- basename(patient_folders)
+>>>>>>> bc4da0c6c7a9ecad6971516352f9be8305589a8d
     
 	seurat_obj$sampleID <- sample_id
 	seurat_obj$barcode <- colnames(seurat_obj)
 	seurat_obj$percent.mt <- PercentageFeatureSet(seurat_obj, pattern = "^MT-")
 
+<<<<<<< HEAD
 	seurat_object_holder[[i]] <- seurat_obj
 	print('one done')
 }
@@ -80,6 +96,13 @@ srt <- eval(parse(text=string))
 
 
 
+=======
+    seurat_object_holder[i] <- seurat_obj
+}
+
+soh <- unlist(seurat_object_holder, use.names=FALSE)
+srt <- merge(soh[1], y = soh[2:length(soh)])
+>>>>>>> bc4da0c6c7a9ecad6971516352f9be8305589a8d
 
 table(srt$sampleID)
 
@@ -99,7 +122,11 @@ srt <- subset(srt, subset = nFeature_RNA > 400 & nCount_RNA > 1000 & percent.mt 
 
 
 
+<<<<<<< HEAD
 save(srt, file="srt.Rda")
+=======
+save(srt, file="/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/bischoff.Rda")
+>>>>>>> bc4da0c6c7a9ecad6971516352f9be8305589a8d
 
 # To load the data again
 #srt <- get(load(file="/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/srt.Rda"))
@@ -111,8 +138,11 @@ save(srt, file="srt.Rda")
 # 12183 14770  1547  1557  7811  6753  9045  9371  6615  5173  2986  4861  5674
 # p031t p032n p032t p033n p033t p034n p034t
 #  6134  5900 11942  5739  5202  5308  5165
+<<<<<<< HEAD
 
 
 #@ RUNNING THE COMMAND LINE SCRIPT ##
 # cd '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin'
 # Rscript 1_create_seurat_object.R -d '/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/data/'
+=======
+>>>>>>> bc4da0c6c7a9ecad6971516352f9be8305589a8d
