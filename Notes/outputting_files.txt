@@ -1,0 +1,10 @@
+
+How does one output a dile from an R script?
+
+Should I ...
+
+- Save it to the nextflow working directory by using the builtin commands to get the working directory and pass this as an argument to the R function. 
+
+    -And then output the path string from the R script?
+    -Or will it know where the output is and I just have to state 'file xyx' in the 'output:' block
+    -
