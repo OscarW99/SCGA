@@ -1,15 +1,53 @@
 #!/usr/bin/env nextflow
 
+
 nextflow.enable.dsl=2
 
 
-<<<<<<< HEAD
-process low_level_integration {
-  
-=======
-process FIRST_TEST {
+//@ CELLPHONEDB PROCESS SCRIPTS - WILL COMBINE INTO ONE WORKFLOW SCRIPT
+// @ //////////////////////////////////////////////////////////////////////////////////////////
+// @ //////////////////////////////////////////////////////////////////////////////////////////
+// @ //////////////////////////////////////////////////////////////////////////////////////////
+
+process cellphoneDB_input_file_generation {
     
->>>>>>> bc4da0c6c7a9ecad6971516352f9be8305589a8d
+
+    input:
+        // with only use path here if not using Rscript (val otherwise)
+        val seurat_object_path
+        
+
+    output:
+        path or val?
+
+    script:
+        """
+        Rscript ${workflow.projectDir}/bin/cellphoneDB_input_file_generation.R -so $seurat_object_path -o ${workflow.worktDir}
+        """
+}
+
+
+
+
+process cellphoneDB_run {
+    
+    // requires cpdb conda env
+    input:
+        path patient_count_data
+
+    output:
+        stdout emit: echooo
+
+    script:
+        """
+        Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
+        """
+}
+
+
+
+process cellphoneDB_dotplot {
+    
 
     input:
         tuple val(compartment), val(draft), val(seurat_object), val(baseDir)
@@ -19,25 +57,30 @@ process FIRST_TEST {
 
     script:
         """
-<<<<<<< HEAD
-        Rscript ${workflow.projectDir}/bin/low_level_label_transfer.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
+        Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
         """
-
 }
 
 
-highlevel_seurat_object = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/pAdeno_early_naive_subset/htan_msk_addition/draft2/highlevel/v12.highlevel.Rda'
-baseDir = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/pAdeno_early_naive_subset/htan_msk_addition/'
-draft = 'draft3'
 
-celltypes = Channel.from('bplasmast', 'myeloid', 'tnk')
-glob = Channel.of([draft, highlevel_seurat_object, baseDir])
 
-workflow {    
-    low_level_integration(celltypes.combine(glob))
-    low_level_integration.out.view()
-}
-=======
+// @ //////////////////////////////////////////////////////////////////////////////////////////
+// @ //////////////////////////////////////////////////////////////////////////////////////////
+// @ //////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+process FIRST_TEST {
+    
+
+    input:
+        tuple val(compartment), val(draft), val(seurat_object), val(baseDir)
+
+    output:
+        stdout emit: echooo
+
+    script:
+        """
         Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
         """
 }
@@ -87,4 +130,3 @@ workflow {
 //     FIRST_TEST.out.view()
 //     celltypes.combine(glob).view()
 // }
->>>>>>> bc4da0c6c7a9ecad6971516352f9be8305589a8d
