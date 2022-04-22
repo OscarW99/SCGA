@@ -2,3 +2,5 @@
 .nextflow
 .nextflow.log*
 ./nextflow/work
+work
+nextflow/bin/data
