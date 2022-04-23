@@ -1,14 +1,14 @@
 #!/usr/bin/env Rscript
 
 library(argparse)
-parser <- ArgumentParser(description='An executible script to prepare files to run cellphoneDB in a patient-wise manner.')
+parser <- ArgumentParser(description='An executible script to split a seurat object by patient and save as individual seurat objects.')
 parser$add_argument("-so", "--seurat_object", type="character", dest="seurat_object", help="Provide the full path to the seurat object for ehich you will run cellphoneDB on.")
-parser$add_argument("-o", "--output_directory", type="character", dest="output_directory", help="Provide the full path to directory in which to store the putput of this script.")
+# parser$add_argument("-o", "--output_directory", type="character", dest="output_directory", help="Provide the full path to directory in which to store the putput of this script.")
 parser$add_argument("-id", "--sample_id_meta", type="character", dest="sample_id_meta", help="Provide the metadata column of the seurat object that contains the sampleID information.")
 
 args <- parser$parse_args()
 seurat_object <- args$seurat_object
-output_directory <- args$output_directory
+# output_directory <- args$output_directory
 sample_id_meta <- args$sample_id_meta
 
 # #! del these
@@ -29,14 +29,14 @@ srt <- get(load(file = seurat_object))
 # split by sample ID
 all.bypatient <- SplitObject(srt, split.by = sample_id_meta)
 
-cpdb.output.path <- paste0(output_directory, "/cellphoneDB/patient_seurat_objects/")
+# cpdb.output.path <- paste0(output_directory, "/cellphoneDB/patient_seurat_objects/")
 
-if (!file.exists(file.path(cpdb.output.path))){
-  dir.create(file.path(cpdb.output.path), showWarnings = FALSE, recursive = TRUE)
-}
+# if (!file.exists(file.path(cpdb.output.path))){
+#   dir.create(file.path(cpdb.output.path), showWarnings = FALSE, recursive = TRUE)
+# }
 
 for (i in 1:length(all.bypatient)){
-  saveRDS(all.bypatient[i], file = paste0(cpdb.output.path, names(all.bypatient[i]), ".rds"))
+  saveRDS(all.bypatient[i], file = paste0(names(all.bypatient[i]), ".rds"))
 }
 
 
