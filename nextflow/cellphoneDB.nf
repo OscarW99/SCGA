@@ -16,12 +16,11 @@ process cellphoneDB_split_seurat_object {
     
     input:
         // with only use path here if not using Rscript (val otherwise)
-        val seurat_object_path
-        val sample_id_meta
+        tuple val(seurat_object_path), val(sample_id_meta)
         
     
     output:
-        path '*rds', emit patient_seurat_objects
+        path '*rds', emit: patient_seurat_objects
 
     script:
         """
@@ -29,49 +28,49 @@ process cellphoneDB_split_seurat_object {
         """
 }
 
-dir = "/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/data/"
-sample_id_meta = 'sampleID'
-file_prep_params = Channel.of([dir, sample_id_meta])
+dir = Channel.of("/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/bischoff.obj.Rda")
+sample_id_meta = Channel.of('sampleID')
+//file_prep_params = Channel.from[dir, sample_id_meta)
 
 
 workflow {    
-    cellphoneDB_split_seurat_object(file_prep_params)
+    cellphoneDB_split_seurat_object(dir.combine(sample_id_meta))
     cellphoneDB_split_seurat_object.out.view()
 }
 
 
 
-process cellphoneDB_run {
+// process cellphoneDB_run {
     
-    // requires cpdb conda env
-    input:
-        path patient_count_data
+//     // requires cpdb conda env
+//     input:
+//         path patient_count_data
 
-    output:
-        stdout emit: echooo
+//     output:
+//         stdout emit: echooo
 
-    script:
-        """
-        Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
-        """
-}
+//     script:
+//         """
+//         Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
+//         """
+// }
 
 
 
-process cellphoneDB_dotplot {
+// process cellphoneDB_dotplot {
     
 
-    input:
-        tuple val(compartment), val(draft), val(seurat_object), val(baseDir)
+//     input:
+//         tuple val(compartment), val(draft), val(seurat_object), val(baseDir)
 
-    output:
-        stdout emit: echooo
+//     output:
+//         stdout emit: echooo
 
-    script:
-        """
-        Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
-        """
-}
+//     script:
+//         """
+//         Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
+//         """
+// }
 
 
 
