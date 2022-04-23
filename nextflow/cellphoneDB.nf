@@ -21,10 +21,11 @@ process cellphoneDB_split_seurat_object {
     
     output:
         path '*rds', emit: patient_seurat_objects
+        //stdout emit: echooo
 
     script:
         """
-        Rscript ${workflow.projectDir}/bin/cellphoneDB/1_cellphoneDB_split_seurat_object.R -so $seurat_object_path -o ${workflow.worktDir} -id $sample_id_meta
+        Rscript ${workflow.projectDir}/bin/cellphoneDB/1_cellphoneDB_split_seurat_object.R -so $seurat_object_path -o ${workflow.workDir} -id $sample_id_meta
         """
 }
 
