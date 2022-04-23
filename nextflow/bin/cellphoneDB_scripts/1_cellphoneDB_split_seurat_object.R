@@ -12,18 +12,17 @@ output_directory <- args$output_directory
 sample_id_meta <- args$sample_id_meta
 
 
-#! del these
+# #! del these
 # seurat_object <- '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/highevel_with_luad_matched_labels.Rda'
 # sample_id_meta <- 'SampleID'
 # output_directory <- '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/'
-#!
+# #!
 
 
 library(ggplot2)
 library(Seurat)
 library(dplyr)
 library(Matrix)
-library(future.apply)
 
 
 v12.celltype <- get(load(file = seurat_object))
@@ -31,11 +30,16 @@ v12.celltype <- get(load(file = seurat_object))
 # split by sample ID
 all.bypatient <- SplitObject(v12.celltype, split.by = sample_id_meta)
 
-cpdb.output.path <- paste0(output_directory, "/cellphoneDB/")
+cpdb.output.path <- paste0(output_directory, "/cellphoneDB/patient_seurat_objects/")
+
 if (!file.exists(file.path(cpdb.output.path))){
-  dir.create(file.path(cpdb.output.path), showWarnings = FALSE)
+  dir.create(file.path(cpdb.output.path), showWarnings = FALSE, recursive = TRUE)
 }
 
-saveRDS(all.bypatient, file = paste0(cpdb.output.path, "/all.bypatient.rds"))
+for (i in 1:length(all.bypatient)){
+  saveRDS(all.bypatient[i], file = paste0(cpdb.output.path, names(all.bypatient[i]), ".rds"))
+}
 
-cat(length(all.bypatient))
+
+#* Maybe i could just output the folder where all of them are saved and then use somthing like this:
+# my_pipeline( channel.from('/some/data') )
