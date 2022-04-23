@@ -28,13 +28,15 @@ process cellphoneDB_split_seurat_object {
         """
 }
 
-dir = Channel.of("/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/bischoff.obj.Rda")
-sample_id_meta = Channel.of('sampleID')
+dir = "/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/bischoff.obj.Rda"
+sample_id_meta = "sampleID"
+
+tuple = Channel.of([dir, sample_id_meta])
 //file_prep_params = Channel.from[dir, sample_id_meta)
 
 
-workflow {    
-    cellphoneDB_split_seurat_object(dir, sample_id_meta))
+workflow {
+    cellphoneDB_split_seurat_object(tuple)
     cellphoneDB_split_seurat_object.out.view()
 }
 
