@@ -42,7 +42,7 @@ tuple = Channel.of([dir, sample_id_meta])
 
 workflow {
     cellphoneDB_split_seurat_object(tuple)
-    cellphoneDB_split_seurat_object.patient_seurat_objects.view()
+    cellphoneDB_split_seurat_object.out.patient_seurat_objects.view()
 }
 
 
