@@ -6,3 +6,4 @@ git remote set-url origin git@github-SCGA:OscarW99/SCGA.git
 git remote set-url origin git@github-new_broad:OscarW99/SCGA.git
 
 
+git reset --hard

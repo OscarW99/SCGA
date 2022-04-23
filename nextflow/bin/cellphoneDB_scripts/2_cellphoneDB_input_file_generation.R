@@ -1,6 +1,5 @@
 #!/usr/bin/env Rscript
 
-
 library(argparse)
 
 parser <- ArgumentParser(description='An executible script to prepare files to run cellphoneDB in a patient-wise manner.')

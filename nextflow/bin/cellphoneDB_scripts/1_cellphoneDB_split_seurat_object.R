@@ -29,14 +29,14 @@ srt <- get(load(file = seurat_object))
 # split by sample ID
 all.bypatient <- SplitObject(srt, split.by = sample_id_meta)
 
-# cpdb.output.path <- paste0(output_directory, "/cellphoneDB/patient_seurat_objects/")
+cpdb.output.path <- "cellphoneDB/patient_samples/"
 
-# if (!file.exists(file.path(cpdb.output.path))){
-#   dir.create(file.path(cpdb.output.path), showWarnings = FALSE, recursive = TRUE)
-# }
+if (!file.exists(file.path(cpdb.output.path))){
+  dir.create(file.path(cpdb.output.path), showWarnings = FALSE, recursive = TRUE)
+}
 
 for (i in 1:length(all.bypatient)){
-  saveRDS(all.bypatient[i], file = paste0(names(all.bypatient[i]), ".rds"))
+  saveRDS(all.bypatient[i], file = paste0(cpdb.output.path, names(all.bypatient[i]), ".rds"))
 }
 
 
