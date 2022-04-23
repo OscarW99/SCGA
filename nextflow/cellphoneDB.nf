@@ -34,7 +34,7 @@ sample_id_meta = Channel.of('sampleID')
 
 
 workflow {    
-    cellphoneDB_split_seurat_object(dir.combine(sample_id_meta))
+    cellphoneDB_split_seurat_object(dir, sample_id_meta))
     cellphoneDB_split_seurat_object.out.view()
 }
 
