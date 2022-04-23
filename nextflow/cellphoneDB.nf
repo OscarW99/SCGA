@@ -41,6 +41,23 @@ workflow {
 }
 
 
+process cellphoneDB_input_file_generation.R {
+    
+    
+    input:
+        // with only use path here if not using Rscript (val otherwise)
+        tuple val(seurat_object_path), val(sample_id_meta)
+        
+    
+    output:
+        path '*rds', emit: patient_seurat_objects
+
+    script:
+        """
+        Rscript ${workflow.projectDir}/bin/cellphoneDB/1_cellphoneDB_split_seurat_object.R -so $seurat_object_path -o ${workflow.worktDir} -id $sample_id_meta
+        """
+}
+
 
 // process cellphoneDB_run {
     

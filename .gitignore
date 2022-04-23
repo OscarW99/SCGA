@@ -1,6 +1,6 @@
-./nextflow/.nextflow
-.nextflow
-.nextflow.log*
-./nextflow/work
-work
-nextflow/bin/data
+#./nextflow/.nextflow
+#.nextflow
+#.nextflow.log*
+#./nextflow/work
+#work
+#nextflow/bin/data
