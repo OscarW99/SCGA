@@ -64,7 +64,7 @@ process cellphoneDB_input_file_generation {
 
     script:
         """
-        Rscript ${workflow.projectDir}/bin/cellphoneDB_scripts/1_cellphoneDB_split_seurat_object.R -so $seurat_object_path -o ${workflow.workDir} -id $sample_id_meta -l $celltype_label_meta
+        Rscript ${workflow.projectDir}/bin/cellphoneDB_scripts/2_cellphoneDB_input_file_generation.R -so $seurat_object_path -o ${workflow.workDir} -id $sample_id_meta -l $celltype_label_meta
         """
 }
 
