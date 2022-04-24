@@ -16,10 +16,10 @@ sample_id_meta <- args$sample_id_meta
 celltype_label_meta <- args$celltype_label_meta
 
 #! del these
-# seurat_object <- '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/highevel_with_luad_matched_labels.Rda'
-# sample_id_meta <- 'SampleID'
-#celltype_label_meta <- 'luad_label_match'
-# output_directory <- '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/'
+seurat_object <- '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/highevel_with_luad_matched_labels.Rda'
+sample_id_meta <- 'SampleID'
+celltype_label_meta <- 'luad_label_match'
+output_directory <- '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/'
 #!
 
 
@@ -53,3 +53,13 @@ meta <- cbind(rownames(meta), meta[,celltype_label_meta, drop=F])
 meta[is.na(meta[,2]),2]<-'Unassigned'
 colnames(meta)<-c('cell','annotation')
 write.table(meta, paste0(cpdb.output.path, sampleid, "/", sampleid, "_meta.txt"), sep="\t", quote=F, row.names=F)
+
+
+
+# for FILE in ./cellphoneDB/patient_seurat_objects/*
+# do 
+#     Rscript /ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/cellphoneDB_scripts/2_cellphoneDB_input_file_generation.R -so $FILE -o '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/cellphoneDB/' -id 'SampleID' -l 'luad_label_match'
+# done
+
+# use ls -d in bash for loop for next script
+
