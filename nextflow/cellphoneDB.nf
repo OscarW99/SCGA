@@ -69,14 +69,14 @@ process cellphoneDB_input_file_generation {
 }
 
 
-myFileChannel = Channel.fromPath( '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/cellphoneDB/*.rds') 
+myFileChannel = Channel.fromPath( '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/cellphoneDB/patient_seurat_objects/*.rds')
 myFileChannel.view()
 
-sample_id_meta = "sampleID"
-celltype_label_meta = "luad_label_match"
-constants = Channel.of([sample_id_meta, celltype_label_meta])
+// sample_id_meta = "sampleID"
+// celltype_label_meta = "luad_label_match"
+// constants = Channel.of([sample_id_meta, celltype_label_meta])
 
-// //* I need to create a channel from the dir of the part1 output.
+// // //* I need to create a channel from the dir of the part1 output.
 
 
 // workflow {
@@ -88,7 +88,7 @@ constants = Channel.of([sample_id_meta, celltype_label_meta])
     
 // }
 
------------------------------------------
+// -----------------------------------------
 
 
 
