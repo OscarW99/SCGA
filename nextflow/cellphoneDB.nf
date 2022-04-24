@@ -64,7 +64,7 @@ process cellphoneDB_input_file_generation {
 
     script:
         """
-        Rscript ${workflow.projectDir}/bin/cellphoneDB_scripts/1_cellphoneDB_split_seurat_object.R -so $seurat_object_path -o ${workflow.worktDir} -id $sample_id_meta -l $celltype_label_meta
+        Rscript ${workflow.projectDir}/bin/cellphoneDB_scripts/1_cellphoneDB_split_seurat_object.R -so $seurat_object_path -o ${workflow.workDir} -id $sample_id_meta -l $celltype_label_meta
         """
 }
 
@@ -79,14 +79,14 @@ constants = Channel.of([sample_id_meta, celltype_label_meta])
 // // //* I need to create a channel from the dir of the part1 output.
 
 
-// workflow {
-//     // cellphoneDB_split_seurat_object(tuple)
-//     // seurat_objects = Channel.from(cellphoneDB_split_seurat_object.out.flatten())
-//     cellphoneDB_input_file_generation(seurat_objects.combine(constants))
-//     cellphoneDB_input_file_generation.out.view()
+workflow {
+    // cellphoneDB_split_seurat_object(tuple)
+    // seurat_objects = Channel.from(cellphoneDB_split_seurat_object.out.flatten())
+    cellphoneDB_input_file_generation(seurat_objects.combine(constants))
+    cellphoneDB_input_file_generation.out.view()
     
     
-// }
+}
 
 // -----------------------------------------
 
