@@ -16,10 +16,10 @@ sample_id_meta <- args$sample_id_meta
 celltype_label_meta <- args$celltype_label_meta
 
 #! del these
-seurat_object <- '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/highevel_with_luad_matched_labels.Rda'
-sample_id_meta <- 'SampleID'
-celltype_label_meta <- 'luad_label_match'
-output_directory <- '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/'
+# seurat_object <- '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/highevel_with_luad_matched_labels.Rda'
+# sample_id_meta <- 'SampleID'
+# celltype_label_meta <- 'luad_label_match'
+# output_directory <- '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/'
 #!
 
 
@@ -44,7 +44,7 @@ if (!file.exists(file.path(cpdb.output.path))){
 options(future.globals.maxSize = 48000 * 1024^2)
 
 sampleid <- unique(srt@meta.data[,sample_id_meta])
-dir.create(file.path(cpdb.output.path, sampleid), showWarnings = FALSE)
+dir.create(file.path(paste0(cpdb.output.path, sampleid)), showWarnings = FALSE)
 counts <- srt[["RNA"]]@counts
 counts.norm <- future_apply(counts, 2, function(x) (x/sum(x))*10000) # this is recommended by the cellphonedb paper
 write.table(counts.norm, paste0(cpdb.output.path, sampleid, "/", sampleid, "_counts.txt"), sep="\t", quote=F)
