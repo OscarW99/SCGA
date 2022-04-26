@@ -36,7 +36,7 @@ if (!file.exists(file.path(cpdb.output.path))){
 }
 
 for (i in 1:length(all.bypatient)){
-  saveRDS(all.bypatient[i], file = paste0(cpdb.output.path, names(all.bypatient[i]), ".rds"))
+  saveRDS(all.bypatient[[i]], file = paste0(cpdb.output.path, names(all.bypatient[i]), ".rds"))
 }
 
 

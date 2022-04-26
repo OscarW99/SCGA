@@ -32,7 +32,8 @@ library(future.apply)
 
 
 # LoadRDS
-srt <- get(load(file = seurat_object))
+srt <- readRDS(file = seurat_object)
+srt <- srt[[1]]
 
 # Load var from last script
 cpdb.output.path <- paste0(output_directory, "/cellphoneDB/cpdb_input_files/")
