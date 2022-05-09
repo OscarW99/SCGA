@@ -51,9 +51,9 @@ patient_folders <- list.dirs(data_directory, full.names = TRUE, recursive = FALS
 
 seurat_object_holder <- list()
 
-for (i in patient_folders){
+for (i in 1:length(patient_folders)){
 
-	name <- patient_folders[i]
+	name <- basename(patient_folders[i])
 	data <- paste0('file name is: ', name)
 	write.csv(data, file=paste0(name, '.csv'))
 }

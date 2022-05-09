@@ -3,4 +3,4 @@
 .nextflow.log*
 ./nextflow/work
 work
-# nextflow/bin/data
+nextflow/bin/data
