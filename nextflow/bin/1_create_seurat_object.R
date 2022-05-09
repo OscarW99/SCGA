@@ -16,7 +16,7 @@
 # |       |-- barcodes.tsv.gz
 # |       |-- features.tsv.gz
 # |       `-- matrix.mtx.gz
-# `-- patient2
+# `-- patient3
 #     `-- filtered_feature_bc_matrix
 #         |-- barcodes.tsv.gz
 #         |-- features.tsv.gz
@@ -34,13 +34,10 @@ parser$add_argument("-d", "--data_directory", type="character", dest="data_direc
 args <- parser$parse_args()
 data_directory <- args$data_directory
 
-<<<<<<< HEAD
 #! del these
 data_directory <- '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/data'
 #!
 
-=======
->>>>>>> bc4da0c6c7a9ecad6971516352f9be8305589a8d
 
 # Import libraries
 library(Seurat)
@@ -51,98 +48,83 @@ library(Seurat)
 
 
 patient_folders <- list.dirs(data_directory, full.names = TRUE, recursive = FALSE)
-<<<<<<< HEAD
 
 seurat_object_holder <- list()
-=======
-seurat_object_holder = c("", length=length(patient_folders))
 
-seurat_object_holder <- vector(mode="character", length=length(patient_folders))
+for (i in patient_folders){
 
+	name <- patient_folders[i]
+	data <- paste0('file name is: ', name)
+	write.csv(data, file=paste0(name, '.csv'))
+}
 
->>>>>>> bc4da0c6c7a9ecad6971516352f9be8305589a8d
-
-for (i in 1:length(patient_folders)) {
-    patient <- patient_folders[i]
-	sparce_matrix <- Read10X(data.dir=paste0(patient_folders, "/filtered_feature_bc_matrix"))
-	seurat_obj <- CreateSeuratObject(sparce_matrix)
-<<<<<<< HEAD
-	sample_id <- basename(patient_folders[i])
-=======
-	sample_id <- basename(patient_folders)
->>>>>>> bc4da0c6c7a9ecad6971516352f9be8305589a8d
+# for (i in 1:length(patient_folders)) {
+#     patient <- patient_folders[i]
+# 	sparce_matrix <- Read10X(data.dir=paste0(patient_folders, "/filtered_feature_bc_matrix"))
+# 	seurat_obj <- CreateSeuratObject(sparce_matrix)
+# 	sample_id <- basename(patient)
     
-	seurat_obj$sampleID <- sample_id
-	seurat_obj$barcode <- colnames(seurat_obj)
-	seurat_obj$percent.mt <- PercentageFeatureSet(seurat_obj, pattern = "^MT-")
+# 	seurat_obj$sampleID <- sample_id
+# 	seurat_obj$barcode <- colnames(seurat_obj)
+# 	seurat_obj$percent.mt <- PercentageFeatureSet(seurat_obj, pattern = "^MT-")
 
-<<<<<<< HEAD
-	seurat_object_holder[[i]] <- seurat_obj
-	print('one done')
-}
+# 	seurat_object_holder[[i]] <- seurat_obj
+# 	print('one done')
+# }
 
-soh <- unlist(seurat_object_holder, use.names=FALSE)
+# soh <- unlist(seurat_object_holder, use.names=FALSE)
 
-# loop o create merge command
-#* add an 'if length soh is less then 3 option'
-string <- "merge(soh[[1]], y = c(soh[[2]]"
-for (i in 3:length(soh)){
-	addition <- paste0(', soh[[', i, ']]')
-	string <- paste0(string, addition)
-}
-string <- paste0(string, '))')
+# # loop o create merge command
+# #* add an 'if length soh is less then 3 option'
+# string <- "merge(soh[[1]], y = c(soh[[2]]"
+# for (i in 3:length(soh)){
+# 	addition <- paste0(', soh[[', i, ']]')
+# 	string <- paste0(string, addition)
+# }
+# string <- paste0(string, '))')
 
-srt <- eval(parse(text=string))
-
+# srt <- eval(parse(text=string))
 
 
-=======
-    seurat_object_holder[i] <- seurat_obj
-}
 
-soh <- unlist(seurat_object_holder, use.names=FALSE)
-srt <- merge(soh[1], y = soh[2:length(soh)])
->>>>>>> bc4da0c6c7a9ecad6971516352f9be8305589a8d
+# seurat_object_holder[i] <- seurat_obj
 
-table(srt$sampleID)
 
-# Violin plots
-#? I wont worry about producing graphs here, I'll leave that to the database.
-#VlnPlot(srt, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3) , pt.size = 0)#
-# VlnPlot(srt, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"),ncol = 3, pt.size = 0) + geom_jitter(alpha = 0.1) + scale_y_continuous(limits=c(0,max(srt$nCount_RNA)))
-# ggsave('', width = 5, height = 4, type="cairo")
 
-# Subset seurat object for low mitochondrial genes, and substantial gene + umi counts
-#! I will need to delve into what these values should be... and wheather a dynamic value will be more appropriate.
-#* It looks like you would plot these values
-# https://hbctraining.github.io/scRNA-seq/lessons/04_SC_quality_control.html
-# The UMI counts per cell should generally be above 500, that is the low end of what we expect. If UMI counts are between 500-1000 counts, it is usable but the cells probably should have been sequenced more deeply.
-srt <- subset(srt, subset = nFeature_RNA > 400 & nCount_RNA > 1000 & percent.mt < 25) # percent.mt = v3:25, v2:10, v1:10
+# # srt <- merge(soh[1], y = soh[2:length(soh)])
+
+# table(srt$sampleID)
+
+# # Violin plots
+# #? I wont worry about producing graphs here, I'll leave that to the database.
+# #VlnPlot(srt, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3) , pt.size = 0)#
+# # VlnPlot(srt, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"),ncol = 3, pt.size = 0) + geom_jitter(alpha = 0.1) + scale_y_continuous(limits=c(0,max(srt$nCount_RNA)))
+# # ggsave('', width = 5, height = 4, type="cairo")
+
+# # Subset seurat object for low mitochondrial genes, and substantial gene + umi counts
+# #! I will need to delve into what these values should be... and wheather a dynamic value will be more appropriate.
+# #* It looks like you would plot these values
+# # https://hbctraining.github.io/scRNA-seq/lessons/04_SC_quality_control.html
+# # The UMI counts per cell should generally be above 500, that is the low end of what we expect. If UMI counts are between 500-1000 counts, it is usable but the cells probably should have been sequenced more deeply.
+# srt <- subset(srt, subset = nFeature_RNA > 400 & nCount_RNA > 1000 & percent.mt < 25) # percent.mt = v3:25, v2:10, v1:10
 
 
 
 
-<<<<<<< HEAD
-save(srt, file="srt.Rda")
-=======
-save(srt, file="/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/bischoff.Rda")
->>>>>>> bc4da0c6c7a9ecad6971516352f9be8305589a8d
+# save(srt, file="srt.Rda")
 
-# To load the data again
-#srt <- get(load(file="/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/srt.Rda"))
+# # To load the data again
+# #srt <- get(load(file="/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/srt.Rda"))
 
 
-# Output: (20680 cells filtered)
-# ... (below is before filtering)
-# p018n p018t p019n p019t p023t p024t p027n p027t p028n p029n p030n p030t p031n
-# 12183 14770  1547  1557  7811  6753  9045  9371  6615  5173  2986  4861  5674
-# p031t p032n p032t p033n p033t p034n p034t
-#  6134  5900 11942  5739  5202  5308  5165
-<<<<<<< HEAD
+# # Output: (20680 cells filtered)
+# # ... (below is before filtering)
+# # p018n p018t p019n p019t p023t p024t p027n p027t p028n p029n p030n p030t p031n
+# # 12183 14770  1547  1557  7811  6753  9045  9371  6615  5173  2986  4861  5674
+# # p031t p032n p032t p033n p033t p034n p034t
+# #  6134  5900 11942  5739  5202  5308  5165
 
 
-#@ RUNNING THE COMMAND LINE SCRIPT ##
-# cd '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin'
-# Rscript 1_create_seurat_object.R -d '/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/data/'
-=======
->>>>>>> bc4da0c6c7a9ecad6971516352f9be8305589a8d
+# #@ RUNNING THE COMMAND LINE SCRIPT ##
+# # cd '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin'
+# # Rscript 1_create_seurat_object.R -d '/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/data/'

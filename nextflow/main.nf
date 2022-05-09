@@ -5,20 +5,20 @@ nextflow.enable.dsl=2
 
 
 
-process FIRST_TEST {
+// process FIRST_TEST {
     
 
-    input:
-        tuple val(compartment), val(draft), val(seurat_object), val(baseDir)
+//     input:
+//         tuple val(compartment), val(draft), val(seurat_object), val(baseDir)
 
-    output:
-        stdout emit: echooo
+//     output:
+//         stdout emit: echooo
 
-    script:
-        """
-        Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
-        """
-}
+//     script:
+//         """
+//         Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
+//         """
+// }
 // *Need to be careful not to change the names of scripts because once I name them it's a pain to go through the code as edit stuff.
 
 process create_seurat_object {
@@ -36,7 +36,7 @@ process create_seurat_object {
         """
 }
 
-dir = "/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/data/"
+dir = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/data'
 
 workflow {    
     create_seurat_object(dir)

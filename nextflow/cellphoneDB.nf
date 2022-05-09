@@ -94,39 +94,40 @@ nextflow.enable.dsl=2
 
 
 
-process cellphoneDB_run {
-    conda "/ahg/regevdata/projects/ICA_Lung/Oscar/conda/cpdb"
-    cpus 1
-    executor 'sge'
-    memory '24 GB'
-    time '5h'
+// process cellphoneDB_run {
+//     conda "/ahg/regevdata/projects/ICA_Lung/Oscar/conda/cpdb"
+//     cpus 1
+//     executor 'sge'
+//     memory '24 GB'
+//     time '5h'
 
     
-    input:
-        path patient_input_folder
+//     input:
+//         path patient_input_folder
 
-    output:
-        stdout emit: echooo
+//     output:
+//         stdout emit: echooo
 
-    script:
-        """
-        cd $patient_input_folder
-        if [[ -f "$patient_input_folder/out/significant_means.txt" ]]
-        then
-            echo 'it exists already!'
-        else
-            name="$(basename -- $patient_input_folder)"
-            echo cellphonedb method statistical_analysis --counts-data=gene_name "$name"_meta_highlvl.txt "$name"_counts_highlvl.txt
-            Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
-        fi
-        """
-}
+//     script:
+//         """
+//         cd $patient_input_folder
+//         if [[ -f "$patient_input_folder/out/significant_means.txt" ]]
+//         then
+//             echo 'it exists already!'
+//         else
+//             name="$(basename -- $patient_input_folder)"
+//             echo cellphonedb method statistical_analysis --counts-data=gene_name "$name"_meta_highlvl.txt "$name"_counts_highlvl.txt
+//             Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
+//         fi
+//         """
+// }
 
 cpdb_files = Channel.fromPath( '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/cell_cell_int_prep/*')
+cpdb_files.flatten().view()
 
-workflow {
-    cellphoneDB_run(cpdb_files.flatten())
-}
+// workflow {
+//     cellphoneDB_run(cpdb_files.flatten())
+// }
 
 // process cellphoneDB_dotplot {
     
