@@ -28,7 +28,7 @@ process create_seurat_object {
         val(data_directory)
 
     output:
-        path '.csv.', emit: out_csv
+        path '*.csv', emit: out_csv
 
     script:
         """
@@ -50,13 +50,13 @@ process second_test {
 
     script:
         """
-        Rscript ${workflow.projectDir}/bin/2_testing_file_save.R -d '$in_file'
+        Rscript ${workflow.projectDir}/bin/2_testing_file_save.R -csv '$in_file'
         """
 }
 
 workflow {    
     create_seurat_object(dir)
-    second_test(create_seurat_object.out())
+    second_test(create_seurat_object.out.flatten())
 }
 
 
