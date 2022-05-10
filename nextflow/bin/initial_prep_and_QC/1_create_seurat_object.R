@@ -3,7 +3,7 @@
 # For this one we will start by assuming the data will be in the form of count data for each patient and the folders will be named after the sampleID.
 
 # So using Bischoff as an example for now. We wiil need to see what the actual output from 10X ect is. We could design the pipeline to integrate seamlessly from these sequencing technologies.
-
+# This script currently requires that the folder names are exactly as below.
 
 ## EXAMPLE DIRECOTRY STRUCTURE ##
 # |-- patient1
@@ -60,7 +60,7 @@ for (i in 1:length(patient_folders)) {
 	seurat_obj$percent.mt <- PercentageFeatureSet(seurat_obj, pattern = "^MT-")
 
 	seurat_object_holder[[i]] <- seurat_obj
-	print('one done')
+	print(paste0('creating seurat object for patient: ', sample_id))
 }
 
 soh <- unlist(seurat_object_holder, use.names=FALSE)
@@ -84,7 +84,7 @@ seurat_object_holder[i] <- seurat_obj
 
 # srt <- merge(soh[1], y = soh[2:length(soh)])
 
-table(srt$sampleID)
+# table(srt$sampleID)
 
 # Violin plots
 #? I wont worry about producing graphs here, I'll leave that to the database.
