@@ -98,8 +98,23 @@ seurat_object_holder[i] <- seurat_obj
 # https://hbctraining.github.io/scRNA-seq/lessons/04_SC_quality_control.html
 # The UMI counts per cell should generally be above 500, that is the low end of what we expect. If UMI counts are between 500-1000 counts, it is usable but the cells probably should have been sequenced more deeply.
 srt <- subset(srt, subset = nFeature_RNA > 400 & nCount_RNA > 1000 & percent.mt < 25) # percent.mt = v3:25, v2:10, v1:10
+# todo - It would be good to output the number of cells filtered (total & because of each of the 3 filtering metrics)
 
+# Doublets cannot be accurately removed using feature counts and UMI counts (/ther are better ways). We will do this later with another tool.
 
+#* GOOD FIGURE, USE FOR WORK
+# library(ggplot2)
+# library(dplyr)
+
+# srt@meta.data %>% 
+# 	ggplot(aes(color=dataset, x=nCount_RNA, fill= dataset)) + 
+# 	geom_density(alpha = 0.2) + 
+# 	scale_x_log10() + 
+# 	theme_classic() +
+# 	ylab("Cell density") +
+# 	geom_vline(xintercept = 500)
+# # VlnPlot(srt, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3 , pt.size = 0)
+# ggsave('/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/test.png')
 
 
 save(srt, file="srt.Rda")

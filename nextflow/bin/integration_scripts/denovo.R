@@ -2,10 +2,14 @@
 
 library(argparse)
 
-parser <- ArgumentParser(description='An executible script to normalize, find variable features, scale, run PCA, run harmony batch correction and run (not plot) UMAPs')
+parser <- ArgumentParser(description='An executible script to do de novo Seurat integration analysis. Including...')
 
 parser$add_argument("-so", "--seurat_object", type="character", dest="seurat_object_path", help="Provide the full path to the seuart object .Rda file.")
-parser$add_argument("-bc", "--batch_correct", type="character", dest="batch_correction", help="Provide the metadata columns of the seurat object that you want to perform batch correction on if any.")
+parser$add_argument("-pf", "--parameter_file", type="character", dest="parameter_file", help="Provide the path to a json file that contains all the parameters for this script.")
+
+args <- parser$parse_args()
+seurat_object_path <- args$seurat_object_path
+
 
 #! The batch correction argument should be a string of all metadata columns seperated by a space. Also surround in quotes
 args <- parser$parse_args()
