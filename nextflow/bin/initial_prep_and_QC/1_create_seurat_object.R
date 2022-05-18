@@ -27,7 +27,7 @@
 # The root folder for these files
 library(argparse)
 
-parser <- ArgumentParser(description='An executible script to create a merged seurat object from the single cell sequencing data from many patients.')
+parser <- ArgumentParser(description='An executible R script to create a merged seurat object from the single cell sequencing data from many patients.')
 
 parser$add_argument("-d", "--data_directory", type="character", dest="data_directory", help="Provide the full path to directory in which all patient count data is stored.")
 
@@ -38,7 +38,7 @@ data_directory <- args$data_directory
 
 # Import libraries
 library(Seurat)
-
+library(ggplot2)
 
 # Loop through each patient folder to create sparce matrix for each patient
 # 1)barcodes.tsv.gz    2)features.tsv.gz    3) matrix.mtx.gz 
@@ -97,7 +97,7 @@ seurat_object_holder[i] <- seurat_obj
 #* It looks like you would plot these values
 # https://hbctraining.github.io/scRNA-seq/lessons/04_SC_quality_control.html
 # The UMI counts per cell should generally be above 500, that is the low end of what we expect. If UMI counts are between 500-1000 counts, it is usable but the cells probably should have been sequenced more deeply.
-srt <- subset(srt, subset = nFeature_RNA > 400 & nCount_RNA > 1000 & percent.mt < 25) # percent.mt = v3:25, v2:10, v1:10
+# srt <- subset(srt, subset = nFeature_RNA > 400 & nCount_RNA > 1000 & percent.mt < 25) # percent.mt = v3:25, v2:10, v1:10
 # todo - It would be good to output the number of cells filtered (total & because of each of the 3 filtering metrics)
 
 # Doublets cannot be accurately removed using feature counts and UMI counts (/ther are better ways). We will do this later with another tool.
@@ -116,8 +116,33 @@ srt <- subset(srt, subset = nFeature_RNA > 400 & nCount_RNA > 1000 & percent.mt 
 # # VlnPlot(srt, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3 , pt.size = 0)
 # ggsave('/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/test.png')
 
-
 save(srt, file="srt.Rda")
+
+# Plot counts
+ggplot(srt@meta.data, aes(x=nCount_RNA)) + 
+geom_density(alpha = 0.2) + 
+scale_x_log10() + 
+theme_classic() +
+ylab("Cell density") +
+geom_vline(xintercept = 1000, color='red')
+ggsave("nCount.png")
+
+# Plot features
+ggplot(highlevel@meta.data, aes(x=nFeature_RNA)) + 
+geom_density(alpha = 0.2) + 
+scale_x_log10() + 
+theme_classic() +
+ylab("Cell density") +
+geom_vline(xintercept = 400, color='red')
+ggsave("nFeature.png")
+
+ggplot(highlevel@meta.data, aes(x=percent.mt)) + 
+geom_density(alpha = 0.2) + 
+scale_x_log10() + 
+theme_classic() +
+ylab("Cell density") +
+geom_vline(xintercept = 25, color='red')
+ggsave("percent.mt.png")
 
 # To load the data again
 #srt <- get(load(file="/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/srt.Rda"))
