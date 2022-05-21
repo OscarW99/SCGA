@@ -6,9 +6,7 @@
         "cluster_resolution":0.5
         },
     "Gene_sets":{
-        "Myeloid":["LYZ", "ABC", "WTF"],
-        "Endothelial":["ect", "lol", "omg"]
+        "Myeloid":["S100A8", "RETN", "FCN1"],
+        "Bplasmast":["IGHGP", "IGHG1", "IGHG3"]
     }
-    
-
 }
