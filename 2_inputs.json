@@ -1,0 +1,14 @@
+{   
+    "QC_thresholds":{
+        "nFeatures_threshold":400,
+        "nCounts_threshold":1000,
+        "percent_mt_threshold":25,
+        "cluster_resolution":0.5
+        },
+    "Gene_sets":{
+        "Myeloid":["LYZ", "ABC", "WTF"],
+        "Endothelial":["ect", "lol", "omg"]
+    }
+    
+
+}
