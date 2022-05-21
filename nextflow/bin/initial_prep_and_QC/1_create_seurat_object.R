@@ -78,28 +78,9 @@ srt <- eval(parse(text=string))
 
 
 
-seurat_object_holder[i] <- seurat_obj
-
-
-
-# srt <- merge(soh[1], y = soh[2:length(soh)])
-
-# table(srt$sampleID)
-
-# Violin plots
-#? I wont worry about producing graphs here, I'll leave that to the database.
-#VlnPlot(srt, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3) , pt.size = 0)#
-# VlnPlot(srt, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"),ncol = 3, pt.size = 0) + geom_jitter(alpha = 0.1) + scale_y_continuous(limits=c(0,max(srt$nCount_RNA)))
-# ggsave('', width = 5, height = 4, type="cairo")
-
-# Subset seurat object for low mitochondrial genes, and substantial gene + umi counts
-#! I will need to delve into what these values should be... and wheather a dynamic value will be more appropriate.
-#* It looks like you would plot these values
 # https://hbctraining.github.io/scRNA-seq/lessons/04_SC_quality_control.html
 # The UMI counts per cell should generally be above 500, that is the low end of what we expect. If UMI counts are between 500-1000 counts, it is usable but the cells probably should have been sequenced more deeply.
 # srt <- subset(srt, subset = nFeature_RNA > 400 & nCount_RNA > 1000 & percent.mt < 25) # percent.mt = v3:25, v2:10, v1:10
-# todo - It would be good to output the number of cells filtered (total & because of each of the 3 filtering metrics)
-
 # Doublets cannot be accurately removed using feature counts and UMI counts (/ther are better ways). We will do this later with another tool.
 
 #* GOOD FIGURE, USE FOR WORK
