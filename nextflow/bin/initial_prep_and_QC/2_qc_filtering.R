@@ -7,6 +7,7 @@ library(rjson)
 library(ggplot2)
 library(sctransform)
 library(dplyr)
+library(gridExtra)
 
 parser <- ArgumentParser(description='An executible R script to filter cells in a seurta object based on provided thresholds for nCounts, nFeatures and percent.mt genes.')
 
@@ -18,6 +19,11 @@ seurat_object_path <- args$seurat_object_path
 parameter_file <- args$parameter_file
 
 message('Loading Seurat Object')
+
+# TESTING
+# seurat_object_path <- '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/pAdeno_early_naive_subset/htan_msk_addition/draft2/myeloid/v12.myeloid.Rda'
+# parameter_file <- '2_inputs.json'
+###
 srt <- get(load(file=seurat_object_path))
 parameters <- fromJSON(file=parameter_file)
 
@@ -59,7 +65,9 @@ srt <- RunUMAP(srt, dims = 1:30, verbose = FALSE)
 message('Finding neighbours')
 srt <- FindNeighbors(srt, dims = 1:30, verbose = FALSE)
 message('Finding clusters')
-srt <- FindClusters(srt, verbose = FALSE, resolution = as.integer(parameters$QC_thresholds$cluster_resolution)
+resolution <- parameters$QC_thresholds$cluster_resolution
+srt <- FindClusters(srt, verbose = FALSE, resolution = resolution)
+Idents(srt) <- "seurat_clusters"
 
 message('Performing cell cycle analysis')
 s.genes <- cc.genes$s.genes
@@ -69,7 +77,7 @@ srt <- CellCycleScoring(srt, s.features = s.genes, g2m.features = g2m.genes, set
 message('Plotting UMAPs')
 #* 1) UMAPs for clusters, cell cycle score, %mt, nCount, nFeatures
 DimPlot(srt, pt.size = .1, label = F, label.size = 4, reduction = "umap")
-ggsave("clusters_UMAP.png", width = 10, height = 8, type = "cairo")
+ggsave(paste0("clusters_", resolution, "UMAP.png"), width = 10, height = 8, type = "cairo")
 # !##############################################################################
 DimPlot(srt, pt.size = .1, label = F, label.size = 4, group.by = "Phase", reduction = "umap")
 ggsave("cellcycle_phase_UMAP.png", width = 10, height = 8, type = "cairo")
@@ -99,9 +107,9 @@ srt.markers <- FindAllMarkers(srt, only.pos = TRUE, min.pct = 0.25, logfc.thresh
 ordered.srt.markers <- group_by(srt.markers, cluster)
 top10 <- top_n(ordered.srt.markers, 10, wt = avg_log2FC)
 DoHeatmap(pbmc, features = top10$gene) + NoLegend()
-ggsave("cluster_markers_heatmap.png")
+ggsave(paste0("cluster_markers_heatmap", resolution, ".png"))
 
-message('Plotting marker plots')
+message('Plotting feature plots')
 #* 3) A Feature-plot with all celltype markers. I could paste the celltype before the gene name for the title of each feature plot.
 input_markers <- unlist(parameters$Gene_sets)
 
@@ -122,6 +130,7 @@ cowplot::plot_grid(plotlist = p, ncol = fp_cols)
 ggsave("Feature_plot.png", width = fp_width, height = fp_height, type = "cairo")
 
 
+message('Plotting violin plots')
 #* 4) A Violin-plot for each of the markers in the json file. This will show each clusters expresison of markers. Have all of these in one figure... so use cowplot.
 vln_plots <- c()
 for (i in 1:length(input_markers)){
@@ -139,10 +148,9 @@ if (length(vln_plots) < 8){
     fp_height <- 3.5*((length(vln_plots) %% 8)+(length(vln_plots) %/% 8))
 }
 cowplot::plot_grid(plotlist = vln_plots, ncol = (fp_cols/2))
-ggsave("Violin_marker_plots.png", width = fp_width, height = fp_height, type = "cairo")
+ggsave(paste0("Violin_marker_plots", resolution, ".png"), width = fp_width, height = fp_height, type = "cairo")
 
 
-# todo - check this works
 # Create table of filtered cells and output this.
 Stage <- c("Before filtering", "After filtering", "number removed")
 Cells <- c(cells_before_filter, cells_after_filter, (cells_before_filter-cells_after_filter))
@@ -152,22 +160,17 @@ t<-tableGrob(filtering_df)
 grid.arrange(t)
 dev.off()
 
-# todo - check you can access object of the subdictionary here using $. e.g. parameters$Cell_filtering$cells_filtered
-parameters$Cell_filtering <- {
-    "cells_before_filtering":cells_before_filter,
-    "cells_after_filtering":cells_after_filter,
-    "cells_filtered":(cells_before_filter-cells_after_filter)
-}
+# update parameters json with output info
+parameters$Cell_filtering$cells_before_filtering <- cells_before_filter
+parameters$Cell_filtering$cells_after_filtering <- cells_after_filter
+parameters$Cell_filtering$cells_filtered <- (cells_before_filter-cells_after_filter)
 
-# todo - check this works
-parameters$Clusters <- {
-    "number_of_clusters":length(unique(srt.markers$cluster))
-}
+parameters$Clusters$number_of_clusters <- length(unique(srt.markers$cluster))
 
 
 # Save the seurat object
 message('Saving seurat object')
-save(srt, file=paste0("srt_", toString(parameters$QC_thresholds$cluster_resolution), ".Rda"))
+save(srt, file=paste0("srt_", resolution, ".Rda"))
 write(parameters, "output.json")
 
 # *# the json output will be the same for any clustering resolution. Only the seuratobject file name/ contents will change.
