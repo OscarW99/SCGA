@@ -63,3 +63,22 @@ parameters$Clusters$number_of_clusters <- length(unique(srt$seurat_clusters))
 message('Saving seurat object')
 save(srt, file=paste0("srt_", resolution, ".Rda"))
 write(parameters, "output.json")
+
+
+
+# What json will look like at the end
+# {   
+#     "QC_thresholds":{
+#         "nFeatures_threshold":400,
+#         "nCounts_threshold":1000,
+#         "percent_mt_threshold":25,
+#         "cluster_resolution":0.5
+#         },
+#     "Gene_sets":{
+#         "Myeloid":["S100A8", "RETN", "FCN1"],
+#         "Bplasmast":["IGHGP", "IGHG1", "IGHG3"]
+#     },
+#     "Clusters":{
+#         "number_of_clusters":10
+#     }
+# }
