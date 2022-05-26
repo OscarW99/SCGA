@@ -34,7 +34,7 @@ message('Finding cluster markers')
 srt.markers <- FindAllMarkers(srt, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
 ordered.srt.markers <- group_by(srt.markers, cluster)
 top10 <- top_n(ordered.srt.markers, 10, wt = avg_log2FC)
-DoHeatmap(pbmc, features = top10$gene) + NoLegend()
+DoHeatmap(srt, features = top10$gene) + NoLegend()
 ggsave(paste0("cluster_markers_heatmap", resolution, ".png"))
 
 message('Plotting violin plots')
