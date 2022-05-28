@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript#!/usr/bin/env Rscript
 
-
+# todo - can i somehow automate testing, like with pytest. I may make a lot of chamges to these scripts going forward so it would be a good idea to make tests. ATM I am just loading stuff in from random places so I could atleast have commented out tests.
 library(argparse)
 library(Seurat)
 library(rjson)
