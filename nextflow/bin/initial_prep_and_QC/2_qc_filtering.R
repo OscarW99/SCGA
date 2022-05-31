@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript#!/usr/bin/env Rscript
 
-# todo - can i somehow automate testing, like with pytest. I may make a lot of chamges to these scripts going forward so it would be a good idea to make tests. ATM I am just loading stuff in from random places so I could atleast have commented out tests.
+# todo - can i somehow automate testing, like with pytest. I may make a lot of chamges to these scripts going forward so it would be a good idea to make tests. ATM I am just loading stuff in from random places so I could atleast have commented out tests for now.
 library(argparse)
 library(Seurat)
 library(rjson)
@@ -106,9 +106,11 @@ message('Finding cluster markers')
 srt.markers <- FindAllMarkers(srt, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
 ordered.srt.markers <- group_by(srt.markers, cluster)
 top10 <- top_n(ordered.srt.markers, 10, wt = avg_log2FC)
-DoHeatmap(srt, features = top10$gene) + NoLegend()
-ggsave(paste0("cluster_markers_heatmap", resolution, ".png"))
-
+DoHeatmap(srt, features = top10$gene, assay = "SCT") + NoLegend()
+plot_size <- min(c(50, max(as.integer(srt$seurat_clusters))))
+ggsave(paste0("cluster_markers_heatmap_", resolution, ".pdf"), width=(plot_size), height=(plot_size))
+dev.off()
+# todo not saving properly
 message('Plotting feature plots')
 #* 3) A Feature-plot with all celltype markers. I could paste the celltype before the gene name for the title of each feature plot.
 input_markers <- unlist(parameters$Gene_sets)
@@ -148,7 +150,7 @@ if (length(vln_plots) < 8){
     fp_height <- 3.5*((length(vln_plots) %% 8)+(length(vln_plots) %/% 8))
 }
 cowplot::plot_grid(plotlist = vln_plots, ncol = (fp_cols/2))
-ggsave(paste0("Violin_marker_plots", resolution, ".png"), width = fp_width, height = fp_height, type = "cairo")
+ggsave(paste0("Violin_marker_plots_", resolution, ".png"), width = fp_width, height = fp_height, type = "cairo")
 
 
 # Create table of filtered cells and output this.
