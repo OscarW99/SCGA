@@ -57,6 +57,7 @@ cells_after_filter <- length(colnames(srt))
 
 options(future.globals.maxSize = 4000 * 1024^2)
 message('Performing SCTransform')
+# Try this with and without regressing vars
 srt <- SCTransform(srt, vars.to.regress = "percent.mt", verbose = FALSE)
 message('Running PCA')
 srt <- RunPCA(srt, verbose = FALSE)

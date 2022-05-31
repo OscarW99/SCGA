@@ -101,15 +101,17 @@ message('Finding cluster markers')
 srt.markers <- FindAllMarkers(srt, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
 ordered.srt.markers <- group_by(srt.markers, cluster)
 top10 <- top_n(ordered.srt.markers, 10, wt = avg_log2FC)
-DoHeatmap(srt, features = top10$gene) + NoLegend()
-ggsave(paste0(compartment, "_cluster_markers_heatmap", resolution, ".png"))
+DoHeatmap(srt, features = top10$gene, assay = "SCT") + NoLegend()
+plot_size <- min(c(50, max(as.integer(srt$seurat_clusters))))
+ggsave(paste0(compartment, "_cluster_markers_heatmap_", resolution, ".pdf"), width=(plot_size), height=(plot_size))
+dev.off()
 
 message('Plotting feature plots')
 #* 3) A Feature-plot with all celltype markers. I could paste the celltype before the gene name for the title of each feature plot.
 
 # compartment is case sensitive
 # todo - test this
-input_markers <- unlist(eval(parse(text = paste0("parameters$Gene_sets$", compartment))))
+input_markers <- unlist(eval(parse(text = paste0("parameters$Compartment_gene_sets$", compartment))))
 
 p <- FeaturePlot(srt, input_markers, pt.size = .001, combine = FALSE)
 for (i in 1:length(p)) {
@@ -148,7 +150,7 @@ if (length(vln_plots) < 8){
 cowplot::plot_grid(plotlist = vln_plots, ncol = (fp_cols/2))
 ggsave(paste0(compartment, "_violin_marker_plots", resolution, ".png"), width = fp_width, height = fp_height, type = "cairo")
 
-parameters$Compartments[compartment] <- length(unique(srt.markers$cluster))
+parameters$Compartments[compartment]$number_of_clusters <- length(unique(srt.markers$cluster))
 
 
 # Save the seurat object
@@ -156,7 +158,7 @@ message('Saving seurat object')
 save(srt, file=paste0(compartment, "_srt_", resolution, ".Rda"))
 write(parameters, paste0(compartment, "_output.json"))# rename after compartment
 
-# # What json import will look like
+# What json output will look like
 # {   
 #     "QC_thresholds":{
 #         "nFeatures_threshold":400,
@@ -181,6 +183,11 @@ write(parameters, paste0(compartment, "_output.json"))# rename after compartment
 #     "Clusters":{
 #         "number_of_clusters":5
 #         "new_cluster_names":c("Tcell", "Bcel", "Myeloid", "Epithelial", "Endothelial")
+#     },
+#     "Compartments":{
+#         "Myeloid":{
+#             "number_of_clusters":20
+#         }
 #     }
 # }
 
