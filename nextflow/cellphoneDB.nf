@@ -28,48 +28,48 @@ process cellphoneDB_file_prep {
     output:
         //path '*rds', emit: patient_seurat_objects
         // might need to use a star * instead of {x} below
-        path "${x}_meta_highlvl.txt" into cpdb_file_prep
-        path "${x}_counts_highlvl.txt" into cpdb_file_prep
+        path "${x}_meta_highlvl.txt", emit: cpdb_file_prep
+        path "${x}_counts_highlvl.txt", emit: cpdb_file_prep
         //stdout emit: echooo
 
     script:
         """
-        Rscript ${workflow.projectDir}/bin/cellphoneDB_scripts/1_cellphoneDB_split_seurat_object.R -so $seurat_object_path -id $sample_id_meta
+        Rscript ${workflow.projectDir}/bin/cellphoneDB_scripts/1_cellphoneDB_split_seurat_object.R -so $seurat_object_path -id $sample_id_meta -l $celltype_label_meta
         """
 }
 
 dir = "/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/bischoff.obj.Rda"
 sample_id_meta = "sampleID"
+celltype_label_meta = "predicted.id.highlevel"
 
-tuple = Channel.of([dir, sample_id_meta])
+tuple = Channel.of([dir, sample_id_meta, celltype_label_meta])
 
 workflow {
     cellphoneDB_split_seurat_object(tuple)
-    cellphoneDB_split_seurat_object.out.patient_seurat_objects.view()
+    cellphoneDB_split_seurat_object.out.cpdb_file_prep.view()
 }
-
 
 
 // -----------------------------------------
 
 
 
-process cellphoneDB_input_file_generation {
+// process cellphoneDB_input_file_generation {
     
     
-    input:
-        // with only use path here if not using Rscript (val otherwise)
-        tuple val(seurat_object_path), val(sample_id_meta), val(celltype_label_meta)
+//     input:
+//         // with only use path here if not using Rscript (val otherwise)
+//         tuple val(seurat_object_path), val(sample_id_meta), val(celltype_label_meta)
         
     
-    output:
-        stdout emit: echooo
+//     output:
+//         stdout emit: echooo
 
-    script:
-        """
-        Rscript ${workflow.projectDir}/bin/cellphoneDB_scripts/2_cellphoneDB_input_file_generation.R -so $seurat_object_path -o ${workflow.workDir} -id $sample_id_meta -l $celltype_label_meta
-        """
-}
+//     script:
+//         """
+//         Rscript ${workflow.projectDir}/bin/cellphoneDB_scripts/2_cellphoneDB_input_file_generation.R -so $seurat_object_path -o ${workflow.workDir} -id $sample_id_meta -l $celltype_label_meta
+//         """
+// }
 
 
 // seurat_objects = Channel.fromPath( '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/cellphoneDB/patient_seurat_objects/*.rds')
@@ -125,8 +125,8 @@ process cellphoneDB_input_file_generation {
 //         """
 // }
 
-cpdb_files = Channel.fromPath( '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/cell_cell_int_prep/*')
-cpdb_files.flatten().view()
+// cpdb_files = Channel.fromPath( '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/cell_cell_int_prep/*')
+// cpdb_files.flatten().view()
 
 // workflow {
 //     cellphoneDB_run(cpdb_files.flatten())
