@@ -22,12 +22,7 @@ process cellphoneDB_split_seurat_object {
         
     
     output:
-        //path '*rds', emit: patient_seurat_objects
-        // might need to use a star * instead of {x} below
-        // path "*_meta.txt", emit: meta_file
-        // path "*_counts.txt", emit: counts_file
-        tuple path("*_meta.txt"), path("*_counts.txt") into out_pair
-        // stdout emit: verbiage
+        tuple path("*_counts.txt"), path("*_meta.txt"), emit: out_pair
 
     script:
         """
@@ -49,22 +44,20 @@ tuple = Channel.of([dir, sample_id_meta, celltype_label_meta])
 
 process cellphoneDB_run {
     conda "/ahg/regevdata/projects/ICA_Lung/Oscar/conda/cpdb"
-    // cpus 1
-    // executor 'sge'
-    // memory '24 GB'
-    // time '5h'
-
+    cpus 1
+    executor 'sge'
+    memory '48 GB'
+    time '6h'
 
     input:
         tuple val(counts_file), val(meta_file)
 
     output:
         stdout emit: echooo
-        // cellphonedb method statistical_analysis --counts-data=gene_name $meta_file	$counts_file
 
     script:
         """
-        cat $counts_file $meta_file > file4.txt
+        cellphonedb method statistical_analysis --counts-data=gene_name $meta_file	$counts_file
         """
 }
 

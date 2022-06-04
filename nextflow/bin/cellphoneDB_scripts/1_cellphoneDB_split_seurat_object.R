@@ -28,32 +28,32 @@ library(future.apply)
 srt <- get(load(file = seurat_object))
 
 # split by sampleID_meta
-# all.bypatient <- SplitObject(srt, split.by = sample_id_meta)
+all.bypatient <- SplitObject(srt, split.by = sample_id_meta)
 
 options(future.globals.maxSize = 48000 * 1024^2)
 
-# for (i in 1:length(all.bypatient)){
-#   srt <- all.bypatient[i]
-#   # Create input files for cpdb
-#   sampleid <- unique(srt@meta.data[,sample_id_meta])
-#   # dir.create(file.path(sampleid), showWarnings = FALSE)
-#   counts <- srt[["RNA"]]@counts
-#   counts.norm <- future_apply(counts, 2, function(x) (x/sum(x))*10000) # this is recommended by the cellphonedb paper
-#   write.table(counts.norm, paste0(sampleid, "_counts.txt"), sep="\t", quote=F)
-#   meta <- srt@meta.data
-#   meta <- cbind(rownames(meta), meta[,celltype_label_meta, drop=F])
-#   meta[is.na(meta[,2]),2]<-'Unassigned'
-#   colnames(meta)<-c('cell','annotation')
-#   write.table(meta, paste0(sampleid, "_meta.txt"), sep="\t", quote=F, row.names=F)
-# }
+for (i in 1:length(all.bypatient)){
+  srt <- all.bypatient[i]
+  # Create input files for cpdb
+  sampleid <- unique(srt@meta.data[,sample_id_meta])
+  # dir.create(file.path(sampleid), showWarnings = FALSE)
+  counts <- srt[["RNA"]]@counts
+  counts.norm <- future_apply(counts, 2, function(x) (x/sum(x))*10000) # this is recommended by the cellphonedb paper
+  write.table(counts.norm, paste0(sampleid, "_counts.txt"), sep="\t", quote=F)
+  meta <- srt@meta.data
+  meta <- cbind(rownames(meta), meta[,celltype_label_meta, drop=F])
+  meta[is.na(meta[,2]),2]<-'Unassigned'
+  colnames(meta)<-c('cell','annotation')
+  write.table(meta, paste0(sampleid, "_meta.txt"), sep="\t", quote=F, row.names=F)
+}
 
-#* Testing ##
-counts.norm <- "hello world"
-meta <- "hello metaverse"
-sampleid <- "patient4236"
-write.table(counts.norm, paste0(sampleid, "_counts.txt"), sep="\t", quote=F)
-write.table(meta, paste0(sampleid, "_meta.txt"), sep="\t", quote=F, row.names=F)
-#*###########
+# #* Testing ##
+# counts.norm <- "hello world"
+# meta <- "hello metaverse"
+# sampleid <- "patient4236"
+# write.table(counts.norm, paste0(sampleid, "_counts.txt"), sep="\t", quote=F)
+# write.table(meta, paste0(sampleid, "_meta.txt"), sep="\t", quote=F, row.names=F)
+# #*###########
 
 
 # # The output of the process that hold this script will be the counts and txt files. 
