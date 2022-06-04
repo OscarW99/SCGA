@@ -65,4 +65,4 @@ write.table(meta, paste0(sampleid, "_meta.txt"), sep="\t", quote=F, row.names=F)
 #     .fromFilePairs('${workDir}/*_{meta,counts}_highlvl.txt')
 
 
-# https://www.nextflow.io/docs/latest/process.html#dynamic-output-file-names
+# # https://www.nextflow.io/docs/latest/process.html#dynamic-output-file-names

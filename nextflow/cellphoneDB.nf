@@ -41,10 +41,91 @@ celltype_label_meta = "predicted.id.highlevel"
 
 tuple = Channel.of([dir, sample_id_meta, celltype_label_meta])
 
+
+
+
+// cpdb_file_prep
+//     .fromFilePairs('${workDir}/*_{meta,counts}_highlvl.txt')
+
+
+process cellphoneDB_run {
+    conda "/ahg/regevdata/projects/ICA_Lung/Oscar/conda/cpdb"
+    // cpus 1
+    // executor 'sge'
+    // memory '24 GB'
+    // time '5h'
+
+    
+    input:
+        tuple val(counts_file), val(meta_file)
+
+    output:
+        stdout emit: echooo
+        // cellphonedb method statistical_analysis --counts-data=gene_name $meta_file	$counts_file
+
+    script:
+        """
+        cat $counts_file $meta_file > file4.txt
+        """
+}
+
 workflow {
     cellphoneDB_split_seurat_object(tuple)
-    cellphoneDB_split_seurat_object.out.collect().view()
+    cellphoneDB_split_seurat_object.out.fromFilePairs('*_{meta,counts}_highlvl.txt') | cellphoneDB_run | view
 }
+
+
+// cpdb_files = Channel.fromPath( '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/cell_cell_int_prep/*')
+// cpdb_files.flatten().view()
+
+// workflow {
+//     cellphoneDB_run(cpdb_files.flatten())
+// }
+
+// process cellphoneDB_dotplot {
+    
+
+//     input:
+//         tuple val(compartment), val(draft), val(seurat_object), val(baseDir)
+
+//     output:
+//         stdout emit: echooo
+
+//     script:
+//         """
+//         Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
+//         """
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // // -----------------------------------------
 
@@ -91,55 +172,6 @@ workflow {
 
 
 
-// process cellphoneDB_run {
-//     conda "/ahg/regevdata/projects/ICA_Lung/Oscar/conda/cpdb"
-//     cpus 1
-//     executor 'sge'
-//     memory '24 GB'
-//     time '5h'
-
-    
-//     input:
-//         path patient_input_folder
-
-//     output:
-//         stdout emit: echooo
-
-//     script:
-//         """
-//         cd $patient_input_folder
-//         if [[ -f "$patient_input_folder/out/significant_means.txt" ]]
-//         then
-//             echo 'it exists already!'
-//         else
-//             name="$(basename -- $patient_input_folder)"
-//             echo cellphonedb method statistical_analysis --counts-data=gene_name "$name"_meta_highlvl.txt "$name"_counts_highlvl.txt
-//             Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
-//         fi
-//         """
-// }
-
-// cpdb_files = Channel.fromPath( '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/cell_cell_int_prep/*')
-// cpdb_files.flatten().view()
-
-// workflow {
-//     cellphoneDB_run(cpdb_files.flatten())
-// }
-
-// process cellphoneDB_dotplot {
-    
-
-//     input:
-//         tuple val(compartment), val(draft), val(seurat_object), val(baseDir)
-
-//     output:
-//         stdout emit: echooo
-
-//     script:
-//         """
-//         Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
-//         """
-// }
 
 
 
