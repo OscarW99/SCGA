@@ -17,7 +17,7 @@ nextflow.enable.dsl=2
 // workDir
 
 
-process cellphoneDB_file_prep {
+process cellphoneDB_split_seurat_object {
     
     
     input:
@@ -28,8 +28,8 @@ process cellphoneDB_file_prep {
     output:
         //path '*rds', emit: patient_seurat_objects
         // might need to use a star * instead of {x} below
-        path "${x}_meta_highlvl.txt", emit: cpdb_file_prep
-        path "${x}_counts_highlvl.txt", emit: cpdb_file_prep
+        path "${x}_meta_highlvl.txt"
+        path "${x}_counts_highlvl.txt"
         //stdout emit: echooo
 
     script:
