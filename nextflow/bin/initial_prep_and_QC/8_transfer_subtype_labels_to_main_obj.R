@@ -38,7 +38,7 @@ for (name in cso_names){
 # Need to make sure the placeholder is gone. It should be gone if the code ran correctly. I will be able to tell from a table which has the number of celltypes for each sampleID. It will be good to have the same table before and after doublet removal to see what cells have been removed.
 
 
-meta_data <- seurat_object@meta.data
+meta_data <- srt@meta.data
 table <- table(meta_data[, c("sampleID", "compartment")])
 table <- data.frame(table)
 table <- dcast(table, sampleID ~ compartment)
@@ -53,5 +53,5 @@ p<-tableGrob(table)
 grid.arrange(p)
 dev.off()
 
-
-
+# Save main seurat object
+save(srt, file=paste0("srt.Rda"))

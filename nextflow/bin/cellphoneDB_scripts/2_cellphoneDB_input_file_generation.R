@@ -22,14 +22,11 @@ celltype_label_meta <- args$celltype_label_meta
 # output_directory <- '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/'
 #!
 
-
 library(ggplot2)
 library(Seurat)
 library(dplyr)
 library(Matrix)
 library(future.apply)
-
-
 
 # LoadRDS
 srt <- readRDS(file = seurat_object)
@@ -44,6 +41,7 @@ if (!file.exists(file.path(cpdb.output.path))){
 
 options(future.globals.maxSize = 48000 * 1024^2)
 
+# Create input files for cpdb
 sampleid <- unique(srt@meta.data[,sample_id_meta])
 dir.create(file.path(paste0(cpdb.output.path, sampleid)), showWarnings = FALSE)
 counts <- srt[["RNA"]]@counts
