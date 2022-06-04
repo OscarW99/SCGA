@@ -72,8 +72,8 @@ workflow {
     cellphoneDB_split_seurat_object.out.counts_file.view()
     cellphoneDB_split_seurat_object.out.meta_file.view()
     // tup = Channel.of([cellphoneDB_split_seurat_object.out.counts_file, cellphoneDB_split_seurat_object.out.meta_file])
-    // cellphoneDB_run(tup)
-    // cellphoneDB_run.out.view()
+    cellphoneDB_run(cellphoneDB_split_seurat_object.out)
+    cellphoneDB_run.out.view()
 }
 
 
