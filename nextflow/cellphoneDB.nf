@@ -24,10 +24,9 @@ process cellphoneDB_split_seurat_object {
     output:
         //path '*rds', emit: patient_seurat_objects
         // might need to use a star * instead of {x} below
-        // path "*_meta_highlvl.txt"
-        // path "*_counts_highlvl.txt"
-        stdout emit: verbiage
-
+        path "*_meta.txt", emit: meta_file
+        path "*_counts.txt", emit: counts_file
+        // stdout emit: verbiage
 
     script:
         """
@@ -43,7 +42,6 @@ tuple = Channel.of([dir, sample_id_meta, celltype_label_meta])
 
 
 
-
 // cpdb_file_prep
 //     .fromFilePairs('${workDir}/*_{meta,counts}_highlvl.txt')
 
@@ -55,7 +53,7 @@ process cellphoneDB_run {
     // memory '24 GB'
     // time '5h'
 
-    
+
     input:
         tuple val(counts_file), val(meta_file)
 
@@ -71,7 +69,8 @@ process cellphoneDB_run {
 
 workflow {
     cellphoneDB_split_seurat_object(tuple)
-    cellphoneDB_split_seurat_object.out.fromFilePairs('*_{meta,counts}.txt') | cellphoneDB_run | view
+    cellphoneDB_run(cellphoneDB_split_seurat_object.out.collect())
+    cellphoneDB_run.out.view()
 }
 
 
