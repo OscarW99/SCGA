@@ -28,9 +28,10 @@ process cellphoneDB_split_seurat_object {
     output:
         //path '*rds', emit: patient_seurat_objects
         // might need to use a star * instead of {x} below
-        path "*_meta_highlvl.txt"
-        path "*_counts_highlvl.txt"
-        //stdout emit: echooo
+        // path "*_meta_highlvl.txt"
+        // path "*_counts_highlvl.txt"
+        stdout emit: verbiage
+
 
     script:
         """
@@ -46,7 +47,7 @@ tuple = Channel.of([dir, sample_id_meta, celltype_label_meta])
 
 workflow {
     cellphoneDB_split_seurat_object(tuple)
-    cellphoneDB_split_seurat_object.out.collect().view()
+    cellphoneDB_split_seurat_object.out.view()
 }
 
 
