@@ -56,13 +56,13 @@ write.table(meta, paste0(sampleid, "_meta.txt"), sep="\t", quote=F, row.names=F)
 #*###########
 
 
-# The output of the process that hold this script will be the counts and txt files. 
-path "${x}_meta_highlvl.txt" into cpdb_file_prep
-path "${x}_counts_highlvl.txt" into cpdb_file_prep
+# # The output of the process that hold this script will be the counts and txt files. 
+# path "${x}_meta_highlvl.txt" into cpdb_file_prep
+# path "${x}_counts_highlvl.txt" into cpdb_file_prep
 
-# The input to the next process (where cpdb is actually run) could look like this...
-cpdb_file_prep
-    .fromFilePairs('${workDir}/*_{meta,counts}_highlvl.txt')
+# # The input to the next process (where cpdb is actually run) could look like this...
+# cpdb_file_prep
+#     .fromFilePairs('${workDir}/*_{meta,counts}_highlvl.txt')
 
 
 # https://www.nextflow.io/docs/latest/process.html#dynamic-output-file-names
