@@ -69,7 +69,8 @@ process cellphoneDB_run {
 
 workflow {
     cellphoneDB_split_seurat_object(tuple)
-    cellphoneDB_run(cellphoneDB_split_seurat_object.out.collect())
+    tup = Channel.of([cellphoneDB_split_seurat_object.out.counts_file, cellphoneDB_split_seurat_object.out.meta_file])
+    cellphoneDB_run(tup)
     cellphoneDB_run.out.view()
 }
 
