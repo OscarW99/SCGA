@@ -50,6 +50,7 @@ options(future.globals.maxSize = 48000 * 1024^2)
 #* Testing ##
 counts.norm <- "hello world"
 meta <- "hello metaverse"
+sampleid <- "patient4236"
 write.table(counts.norm, paste0(sampleid, "_counts.txt"), sep="\t", quote=F)
 write.table(meta, paste0(sampleid, "_meta.txt"), sep="\t", quote=F, row.names=F)
 #*###########
