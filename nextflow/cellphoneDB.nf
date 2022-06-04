@@ -28,8 +28,8 @@ process cellphoneDB_split_seurat_object {
     output:
         //path '*rds', emit: patient_seurat_objects
         // might need to use a star * instead of {x} below
-        path "${x}_meta_highlvl.txt"
-        path "${x}_counts_highlvl.txt"
+        path "*_meta_highlvl.txt"
+        path "*_counts_highlvl.txt"
         //stdout emit: echooo
 
     script:
