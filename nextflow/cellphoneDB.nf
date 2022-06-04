@@ -24,8 +24,9 @@ process cellphoneDB_split_seurat_object {
     output:
         //path '*rds', emit: patient_seurat_objects
         // might need to use a star * instead of {x} below
-        path "*_meta.txt", emit: meta_file
-        path "*_counts.txt", emit: counts_file
+        // path "*_meta.txt", emit: meta_file
+        // path "*_counts.txt", emit: counts_file
+        tuple path("*_meta.txt"), path("*_counts.txt") into out_pair
         // stdout emit: verbiage
 
     script:
@@ -69,8 +70,8 @@ process cellphoneDB_run {
 
 workflow {
     cellphoneDB_split_seurat_object(tuple)
-    cellphoneDB_split_seurat_object.out.counts_file.view()
-    cellphoneDB_split_seurat_object.out.meta_file.view()
+    // cellphoneDB_split_seurat_object.out.counts_file.view()
+    // cellphoneDB_split_seurat_object.out.meta_file.view()
     // tup = Channel.of([cellphoneDB_split_seurat_object.out.counts_file, cellphoneDB_split_seurat_object.out.meta_file])
     cellphoneDB_run(cellphoneDB_split_seurat_object.out)
     cellphoneDB_run.out.view()
