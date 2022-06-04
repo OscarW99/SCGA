@@ -32,8 +32,10 @@ all.bypatient <- SplitObject(srt, split.by = sample_id_meta)
 
 options(future.globals.maxSize = 48000 * 1024^2)
 
+# todo - could I use parallel computing practices within R to speed this bit up?
+# todo - rename cpdb_prep (1st) process
 for (i in 1:length(all.bypatient)){
-  srt <- all.bypatient[i]
+  srt <- all.bypatient[[i]]
   # Create input files for cpdb
   sampleid <- unique(srt@meta.data[,sample_id_meta])
   # dir.create(file.path(sampleid), showWarnings = FALSE)
