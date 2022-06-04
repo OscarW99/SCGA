@@ -71,8 +71,7 @@ process cellphoneDB_run {
 
 workflow {
     cellphoneDB_split_seurat_object(tuple)
-    cellphoneDB_split_seurat_object.out.view()
-    // fromFilePairs('*_{meta,counts}_highlvl.txt') | cellphoneDB_run | view
+    cellphoneDB_split_seurat_object.out.fromFilePairs('*_{meta,counts}.txt') | cellphoneDB_run | view
 }
 
 
