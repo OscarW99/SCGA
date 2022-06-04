@@ -46,7 +46,7 @@ tuple = Channel.of([dir, sample_id_meta, celltype_label_meta])
 
 workflow {
     cellphoneDB_split_seurat_object(tuple)
-    cellphoneDB_split_seurat_object.out.cpdb_file_prep.view()
+    cellphoneDB_split_seurat_object.out.view()
 }
 
 
