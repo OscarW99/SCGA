@@ -57,6 +57,7 @@ process cellphoneDB_run {
 
     script:
         """
+        use UGER
         cellphonedb method statistical_analysis --counts-data=gene_name $meta_file	$counts_file
         """
 }

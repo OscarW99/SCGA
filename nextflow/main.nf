@@ -22,13 +22,17 @@ nextflow.enable.dsl=2
 // *Need to be careful not to change the names of scripts because once I name them it's a pain to go through the code as edit stuff.
 
 process create_seurat_object {
-    
+    publishDir '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/publishDir', pattern: '*.png'
 
     input:
         val(data_directory)
 
     output:
-        path '*.csv', emit: out_csv
+        path 'srt.Rda', emit: seurat_out
+        path 'nCount.png', emit: nCounts
+        path 'nFeature.png', emit: nFeatures
+        path 'percent.mt.png', emit: percent_mt
+
 
     script:
         """
@@ -39,25 +43,34 @@ process create_seurat_object {
 dir = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/data'
 
 
-process second_test {
-    
-
-    input:
-        path in_file
-
-    output:
-        stdout emit: echooo
-
-    script:
-        """
-        Rscript ${workflow.projectDir}/bin/2_testing_file_save.R -csv '$in_file'
-        """
-}
-
 workflow {    
     create_seurat_object(dir)
-    second_test(create_seurat_object.out.flatten())
+    // second_test(create_seurat_object.out.flatten())
 }
+
+
+
+
+
+// process second_test {
+    
+
+//     input:
+//         path in_file
+
+//     output:
+//         stdout emit: echooo
+
+//     script:
+//         """
+//         Rscript ${workflow.projectDir}/bin/2_testing_file_save.R -csv '$in_file'
+//         """
+// }
+
+// workflow {    
+//     create_seurat_object(dir)
+//     second_test(create_seurat_object.out.flatten())
+// }
 
 
 
