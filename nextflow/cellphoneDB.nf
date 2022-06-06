@@ -63,8 +63,8 @@ process cellphoneDB_run {
 
 
 // For testing:
-count_file = "/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/data/p030t_counts.txt"
-meta_file = "/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/data/p030t_meta.txt"
+count_file = "/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/work/26/de7a52d0df0695d9c0b419afdee3c5/p030t_counts.txt"
+meta_file = "/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/work/26/de7a52d0df0695d9c0b419afdee3c5/p030t_meta.txt"
 tup = Channel.of([count_file, meta_file])
 
 workflow {
