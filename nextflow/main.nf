@@ -36,7 +36,7 @@ process create_seurat_object {
 
     script:
         """
-        Rscript ${workflow.projectDir}/bin/1_create_seurat_object.R -d '$data_directory'
+        Rscript ${workflow.projectDir}/bin/initial_prep_and_QC/1_create_seurat_object.R -d '$data_directory'
         """
 }
 
