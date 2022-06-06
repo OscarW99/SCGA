@@ -13,33 +13,33 @@ nextflow.enable.dsl=2
 // workDir
 
 
-process cellphoneDB_split_seurat_object {
+// process cellphoneDB_split_seurat_object {
     
     
-    input:
-        // with only use path here if not using Rscript (val otherwise)
-        tuple val(seurat_object_path), val(sample_id_meta), val(celltype_label_meta)
+//     input:
+//         // with only use path here if not using Rscript (val otherwise)
+//         tuple val(seurat_object_path), val(sample_id_meta), val(celltype_label_meta)
         
     
-    output:
-        tuple path("*_counts.txt"), path("*_meta.txt"), emit: out_pair
+//     output:
+//         tuple path("*_counts.txt"), path("*_meta.txt"), emit: out_pair
 
-    script:
-        """
-        Rscript ${workflow.projectDir}/bin/cellphoneDB_scripts/1_cellphoneDB_split_seurat_object.R -so $seurat_object_path -id $sample_id_meta -l $celltype_label_meta
-        """
-}
+//     script:
+//         """
+//         Rscript ${workflow.projectDir}/bin/cellphoneDB_scripts/1_cellphoneDB_split_seurat_object.R -so $seurat_object_path -id $sample_id_meta -l $celltype_label_meta
+//         """
+// }
 
-dir = "/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/bischoff.obj.Rda"
-sample_id_meta = "sampleID"
-celltype_label_meta = "predicted.id.highlevel"
+// dir = "/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/bischoff.obj.Rda"
+// sample_id_meta = "sampleID"
+// celltype_label_meta = "predicted.id.highlevel"
 
-tuple = Channel.of([dir, sample_id_meta, celltype_label_meta])
+// tuple = Channel.of([dir, sample_id_meta, celltype_label_meta])
 
 
 
-// cpdb_file_prep
-//     .fromFilePairs('${workDir}/*_{meta,counts}_highlvl.txt')
+// // cpdb_file_prep
+// //     .fromFilePairs('${workDir}/*_{meta,counts}_highlvl.txt')
 
 
 process cellphoneDB_run {
@@ -61,12 +61,20 @@ process cellphoneDB_run {
         """
 }
 
+
+// For testing:
+count_file = "/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/data/p030t_counts.txt"
+meta_file = "/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/data/p030t_meta.txt"
+tup = Channel.of([count_file, meta_file])
+
 workflow {
-    cellphoneDB_split_seurat_object(tuple)
+    // cellphoneDB_split_seurat_object(tuple)
     // cellphoneDB_split_seurat_object.out.counts_file.view()
     // cellphoneDB_split_seurat_object.out.meta_file.view()
     // tup = Channel.of([cellphoneDB_split_seurat_object.out.counts_file, cellphoneDB_split_seurat_object.out.meta_file])
-    cellphoneDB_run(cellphoneDB_split_seurat_object.out)
+    // cellphoneDB_run(cellphoneDB_split_seurat_object.out)
+    // cellphoneDB_run.out.view()
+    cellphoneDB_run(tup)
     cellphoneDB_run.out.view()
 }
 
@@ -79,7 +87,7 @@ workflow {
 // }
 
 // process cellphoneDB_dotplot {
-    
+
 
 //     input:
 //         tuple val(compartment), val(draft), val(seurat_object), val(baseDir)
