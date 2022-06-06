@@ -43,17 +43,9 @@ process create_seurat_object {
 dir = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/data'
 
 
-workflow {    
-    create_seurat_object(dir)
-    // second_test(create_seurat_object.out.flatten())
-}
-
-
-
-
-
+# todo - test this script
 process qc_filtering {
-    
+    publishDir '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/publishDir', pattern: '*.{png/pdf}'
 
     input:
         tuple val(seurat_object_path), val(parameter_file)
@@ -73,7 +65,7 @@ process qc_filtering {
 
 workflow {    
     create_seurat_object(dir)
-    second_test(create_seurat_object.out.flatten())
+    qc_filtering()
 }
 
 
