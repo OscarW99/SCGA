@@ -109,7 +109,7 @@ geom_vline(xintercept = 1000, color='red')
 ggsave("nCount.png")
 
 # Plot features
-ggplot(highlevel@meta.data, aes(x=nFeature_RNA)) + 
+ggplot(srt@meta.data, aes(x=nFeature_RNA)) + 
 geom_density(alpha = 0.2) + 
 scale_x_log10() + 
 theme_classic() +
@@ -117,7 +117,7 @@ ylab("Cell density") +
 geom_vline(xintercept = 400, color='red')
 ggsave("nFeature.png")
 
-ggplot(highlevel@meta.data, aes(x=percent.mt)) + 
+ggplot(srt@meta.data, aes(x=percent.mt)) + 
 geom_density(alpha = 0.2) + 
 scale_x_log10() + 
 theme_classic() +

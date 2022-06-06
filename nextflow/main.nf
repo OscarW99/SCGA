@@ -52,25 +52,29 @@ workflow {
 
 
 
-// process second_test {
+process qc_filtering {
     
 
-//     input:
-//         path in_file
+    input:
+        tuple val(seurat_object_path), val(parameter_file)
 
-//     output:
-//         stdout emit: echooo
+    output:
+        path '*.png', emit: png_figs
+        path '*.pdf', emit: pdf_figs
+        path 'output.json', emit: json_out
+        path '*.Rda', emit: seurat_out
 
-//     script:
-//         """
-//         Rscript ${workflow.projectDir}/bin/2_testing_file_save.R -csv '$in_file'
-//         """
-// }
 
-// workflow {    
-//     create_seurat_object(dir)
-//     second_test(create_seurat_object.out.flatten())
-// }
+    script:
+        """
+        Rscript ${workflow.projectDir}/bin/2_testing_file_save.R -csv '$in_file'
+        """
+}
+
+workflow {    
+    create_seurat_object(dir)
+    second_test(create_seurat_object.out.flatten())
+}
 
 
 
