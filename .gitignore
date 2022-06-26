@@ -2,6 +2,6 @@
 .nextflow
 .nextflow.log*
 ./nextflow/work
-./scFlow/API_token.txt
+scFlow/API_token.txt
 work
 nextflow/bin/data
