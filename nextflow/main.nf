@@ -5,24 +5,24 @@ nextflow.enable.dsl=2
 
 
 
-// process FIRST_TEST {
+process FIRST_TEST {
     
 
-//     input:
-//         tuple val(compartment), val(draft), val(seurat_object), val(baseDir)
+    input:
+        tuple val(compartment), val(draft), val(seurat_object), val(baseDir)
 
-//     output:
-//         stdout emit: echooo
+    output:
+        stdout emit: echooo
 
-//     script:
-//         """
-//         Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
-//         """
-// }
+    script:
+        """
+        Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
+        """
+}
 // *Need to be careful not to change the names of scripts because once I name them it's a pain to go through the code as edit stuff.
 
 process create_seurat_object {
-    publishDir '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/publishDir', pattern: '*.png'
+    publishDir '$PATH/SCGA/nextflow/bin/publishDir', pattern: '*.png'
 
     input:
         val(data_directory)
@@ -40,12 +40,12 @@ process create_seurat_object {
         """
 }
 
-dir = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/data'
+dir = '$PATH/SCGA/nextflow/bin/data'
 
 
 # todo - test this script
 process qc_filtering {
-    publishDir '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/publishDir', pattern: '*.{png/pdf}'
+    publishDir '$PATH/SCGA/nextflow/bin/publishDir', pattern: '*.{png/pdf}'
 
     input:
         tuple val(seurat_object_path), val(parameter_file)
@@ -78,8 +78,8 @@ workflow {
 
 
 // FIRST_TEST
-// highlevel_seurat_object = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/pAdeno_early_naive_subset/htan_msk_addition/draft2/highlevel/v12.highlevel.Rda'
-// baseDir = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/pAdeno_early_naive_subset/htan_msk_addition/'
+// highlevel_seurat_object = '$PATH/v12.highlevel.Rda'
+// baseDir = '$PATH/base/'
 // draft = 'draft3'
 
 // celltypes = Channel.from('bplasmast', 'myeloid', 'tnk')

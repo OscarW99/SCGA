@@ -7,34 +7,34 @@ nextflow.enable.dsl=2
 // @ //////////////////////////////////////////////////////////////////////////////////////////
 // @ //////////////////////////////////////////////////////////////////////////////////////////
 
-// //* Which one is it?
+
 // projectDir
 // launchDir
 // workDir
 
 
-// process cellphoneDB_split_seurat_object {
+process cellphoneDB_split_seurat_object {
     
     
-//     input:
-//         // with only use path here if not using Rscript (val otherwise)
-//         tuple val(seurat_object_path), val(sample_id_meta), val(celltype_label_meta)
+    input:
+        // will only use path here if not using Rscript (val otherwise)
+        tuple val(seurat_object_path), val(sample_id_meta), val(celltype_label_meta)
         
     
-//     output:
-//         tuple path("*_counts.txt"), path("*_meta.txt"), emit: out_pair
+    output:
+        tuple path("*_counts.txt"), path("*_meta.txt"), emit: out_pair
 
-//     script:
-//         """
-//         Rscript ${workflow.projectDir}/bin/cellphoneDB_scripts/1_cellphoneDB_split_seurat_object.R -so $seurat_object_path -id $sample_id_meta -l $celltype_label_meta
-//         """
-// }
+    script:
+        """
+        Rscript ${workflow.projectDir}/bin/cellphoneDB_scripts/1_cellphoneDB_split_seurat_object.R -so $seurat_object_path -id $sample_id_meta -l $celltype_label_meta
+        """
+}
 
-// dir = "/ahg/regevdata/projects/lungCancerBueno/Results/10x_bischoff_102621/bischoff.obj.Rda"
-// sample_id_meta = "sampleID"
-// celltype_label_meta = "predicted.id.highlevel"
+dir = "$PATH/test.obj.Rda"
+sample_id_meta = "sampleID"
+celltype_label_meta = "predicted.id.highlevel"
 
-// tuple = Channel.of([dir, sample_id_meta, celltype_label_meta])
+tuple = Channel.of([dir, sample_id_meta, celltype_label_meta])
 
 
 
@@ -43,7 +43,7 @@ nextflow.enable.dsl=2
 
 
 process cellphoneDB_run {
-    conda "/ahg/regevdata/projects/ICA_Lung/Oscar/conda/cpdb"
+    conda "$CONDA_PATH/cpdb"
     cpus 1
     executor 'sge'
     memory '48 GB'
@@ -64,43 +64,43 @@ process cellphoneDB_run {
 
 
 // For testing:
-count_file = "/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/work/26/de7a52d0df0695d9c0b419afdee3c5/p030t_counts.txt"
-meta_file = "/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/work/26/de7a52d0df0695d9c0b419afdee3c5/p030t_meta.txt"
+count_file = "$PATH/SCGA/nextflow/work/26/de7a52d0df0695d9c0b419afdee3c5/p030t_counts.txt"
+meta_file = "$PATH/SCGA/nextflow/work/26/de7a52d0df0695d9c0b419afdee3c5/p030t_meta.txt"
 tup = Channel.of([count_file, meta_file])
 
 workflow {
-    // cellphoneDB_split_seurat_object(tuple)
-    // cellphoneDB_split_seurat_object.out.counts_file.view()
-    // cellphoneDB_split_seurat_object.out.meta_file.view()
-    // tup = Channel.of([cellphoneDB_split_seurat_object.out.counts_file, cellphoneDB_split_seurat_object.out.meta_file])
-    // cellphoneDB_run(cellphoneDB_split_seurat_object.out)
-    // cellphoneDB_run.out.view()
+    cellphoneDB_split_seurat_object(tuple)
+    cellphoneDB_split_seurat_object.out.counts_file.view()
+    cellphoneDB_split_seurat_object.out.meta_file.view()
+    tup = Channel.of([cellphoneDB_split_seurat_object.out.counts_file, cellphoneDB_split_seurat_object.out.meta_file])
+    cellphoneDB_run(cellphoneDB_split_seurat_object.out)
+    cellphoneDB_run.out.view()
     cellphoneDB_run(tup)
     cellphoneDB_run.out.view()
 }
 
 
-// cpdb_files = Channel.fromPath( '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/cell_cell_int_prep/*')
-// cpdb_files.flatten().view()
+cpdb_files = Channel.fromPath( '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/adj_normal_subset/for_manu/draft3/highlevel/cell_cell_int_prep/*')
+cpdb_files.flatten().view()
 
-// workflow {
-//     cellphoneDB_run(cpdb_files.flatten())
-// }
+workflow {
+    cellphoneDB_run(cpdb_files.flatten())
+}
 
-// process cellphoneDB_dotplot {
+process cellphoneDB_dotplot {
 
 
-//     input:
-//         tuple val(compartment), val(draft), val(seurat_object), val(baseDir)
+    input:
+        tuple val(compartment), val(draft), val(seurat_object), val(baseDir)
 
-//     output:
-//         stdout emit: echooo
+    output:
+        stdout emit: echooo
 
-//     script:
-//         """
-//         Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
-//         """
-// }
+    script:
+        """
+        Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
+        """
+}
 
 
 

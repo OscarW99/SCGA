@@ -1,7 +1,7 @@
 # Used this to generate API token before downloading package: https://combiz.github.io/scFlow/ .. section == 'How to contribure'
 
 
-devtools::install_github("combiz/scFlow", auth_token = "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")
+devtools::install_github("combiz/scFlow", auth_token = "HIDDEN")
 
 # Debugging the scFlow downlaod
 # https://stackoverflow.com/questions/59303030/devtools-error-in-read-dcfpath-desc-line-starting-this-corresponds-to 
