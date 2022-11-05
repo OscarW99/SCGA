@@ -39,7 +39,7 @@ process create_seurat_object {
         """
 }
 
-dir = '$PATH/SCGA/nextflow/bin/data'
+dir = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/data'
 
 // todo - test this script
 process qc_filtering {
@@ -60,13 +60,12 @@ process qc_filtering {
         """
 }
 
-dir2 = '$PATH/SCGA/2_inputs.json'
+dir2 = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/2_inputs.json'
 
 workflow {   
-    println dir
-    // create_seurat_object(dir)
-    // qc_in = Channel.of( [create_seurat_object.out.seurat_out, dir2] ) 
-    // qc_filtering( qc_in )
+    create_seurat_object(dir)
+    qc_in = Channel.of( [create_seurat_object.out.seurat_out, dir2] ) 
+    qc_filtering( qc_in )
 }
 
 
