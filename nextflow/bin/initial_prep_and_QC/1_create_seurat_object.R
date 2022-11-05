@@ -49,7 +49,7 @@ seurat_object_holder <- list()
 
 for (i in 1:length(patient_folders)) {
     patient <- patient_folders[i]
-	sparce_matrix <- Read10X(data.dir=paste0(patient_folders, "/filtered_feature_bc_matrix"))
+	sparce_matrix <- Read10X(data.dir=paste0(patient, "/filtered_feature_bc_matrix"))
 	seurat_obj <- CreateSeuratObject(sparce_matrix)
 	sample_id <- basename(patient)
     
