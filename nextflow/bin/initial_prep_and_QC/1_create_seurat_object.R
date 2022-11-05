@@ -44,6 +44,7 @@ library(ggplot2)
 # 1)barcodes.tsv.gz    2)features.tsv.gz    3) matrix.mtx.gz 
 
 patient_folders <- list.dirs(data_directory, full.names = TRUE, recursive = FALSE)
+message(patient_folders)
 
 seurat_object_holder <- list()
 
