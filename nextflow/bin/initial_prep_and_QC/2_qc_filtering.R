@@ -18,6 +18,8 @@ args <- parser$parse_args()
 seurat_object_path <- args$seurat_object_path
 parameter_file <- args$parameter_file
 
+print(seurat_object_path)
+
 message('Loading Seurat Object')
 
 # TESTING
