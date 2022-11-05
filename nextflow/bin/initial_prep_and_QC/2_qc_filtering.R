@@ -18,8 +18,6 @@ args <- parser$parse_args()
 seurat_object_path <- args$seurat_object_path
 parameter_file <- args$parameter_file
 
-print(seurat_object_path)
-
 message('Loading Seurat Object')
 
 # TESTING
@@ -72,6 +70,8 @@ resolution <- parameters$QC_thresholds$cluster_resolution
 srt <- FindClusters(srt, verbose = FALSE, resolution = resolution)
 Idents(srt) <- "seurat_clusters"
 
+
+srt <- NormalizeData(object = srt)
 message('Performing cell cycle analysis')
 s.genes <- cc.genes$s.genes
 g2m.genes <- cc.genes$g2m.genes
