@@ -9,7 +9,7 @@ library(sctransform)
 library(dplyr)
 library(gridExtra)
 
-parser <- ArgumentParser(description='An executible R script to filter cells in a seurta object based on provided thresholds for nCounts, nFeatures and percent.mt genes.')
+parser <- ArgumentParser(description='An executible R script to filter cells in a seurat object based on provided thresholds for nCounts, nFeatures and percent.mt genes.')
 
 parser$add_argument("-so", "--seurat_object", type="character", dest="seurat_object_path", help="Provide the full path to the seuart object .Rda file.")
 parser$add_argument("-pf", "--parameter_file", type="character", dest="parameter_file", help="Provide the path to a json file that contains threshold values for nCounts, nFeatures and percent.mt genes.")

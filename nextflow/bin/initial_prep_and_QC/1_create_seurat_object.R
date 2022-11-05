@@ -43,11 +43,9 @@ library(ggplot2)
 # Loop through each patient folder to create sparce matrix for each patient
 # 1)barcodes.tsv.gz    2)features.tsv.gz    3) matrix.mtx.gz 
 
-
 patient_folders <- list.dirs(data_directory, full.names = TRUE, recursive = FALSE)
 
 seurat_object_holder <- list()
-
 
 for (i in 1:length(patient_folders)) {
     patient <- patient_folders[i]
