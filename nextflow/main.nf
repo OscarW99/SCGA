@@ -62,10 +62,9 @@ dir2 = '$PATH/SCGA/2_inputs.json'
 
 workflow {    
     create_seurat_object(dir)
-    qc_filtering( create_seurat_object.out.seurat_out, dir2 )
+    qc_in = Channel.of( [create_seurat_object.out.seurat_out, dir2] ) 
+    qc_filtering( qc_in )
 }
-
-
 
 
 
