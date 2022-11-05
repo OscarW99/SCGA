@@ -66,7 +66,8 @@ srt = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV
 
 workflow {   
     // create_seurat_object(dir)
-    qc_in = Channel.of( [create_seurat_object.out.seurat_out, dir2] ) 
+    // qc_in = Channel.of( [create_seurat_object.out.seurat_out, dir2] )
+    qc_in = Channel.of( [srt, dir2] )
     qc_filtering( qc_in )
 }
 
