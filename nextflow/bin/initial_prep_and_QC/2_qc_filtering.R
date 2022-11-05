@@ -189,3 +189,7 @@ write(parameters, "output.json")
 #? I can also add my own markers to this file. So at least for the lung I can add them and then perhaps manually adding ones per tissue based on the literatire for specific clients. Eventually building up a marker database perhaps for mouse and human.
 
 # Need seperate nf script to recluster srt at a different resolution... and then re-run all plots.
+
+# TODO do label transfer instead of deovo
+# TODO just do it the same way we do woth work
+
