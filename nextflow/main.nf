@@ -64,13 +64,12 @@ dir2 = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRI
 
 srt = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/work/1c/dab97150c674743f2156737e04fa19/srt.Rda'
 
-workflow {   
+workflow {
     // create_seurat_object(dir)
     // qc_in = Channel.of( [create_seurat_object.out.seurat_out, dir2] )
     qc_in = Channel.of( [srt, dir2] )
     qc_filtering( qc_in )
 }
-
 
 
 
