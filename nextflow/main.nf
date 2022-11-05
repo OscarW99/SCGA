@@ -54,13 +54,15 @@ process qc_filtering {
 
     script:
         """
-        Rscript ${workflow.projectDir}/bin/2_testing_file_save.R -csv '$in_file'
+        Rscript ${workflow.projectDir}/bin/initial_prep_and_QC/2_qc_filtering.R -so '$seurat_object_path' -pf '$parameter_file'
         """
 }
 
+dir2 = '$PATH/SCGA/2_inputs.json'
+
 workflow {    
     create_seurat_object(dir)
-    qc_filtering()
+    qc_filtering( create_seurat_object.out.seurat_out, dir2 )
 }
 
 
