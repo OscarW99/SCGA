@@ -3,7 +3,7 @@
 nextflow.enable.dsl=2
 
 // process FIRST_TEST {
-    
+
 
 //     input:
 //         tuple val(compartment), val(draft), val(seurat_object), val(baseDir)
@@ -16,6 +16,8 @@ nextflow.enable.dsl=2
 //         Rscript ${workflow.projectDir}/bin/FIRST_TEST.R -so $seurat_object -bd $baseDir -c $compartment -n $draft
 //         """
 // }
+
+
 // *Need to be careful not to change the names of scripts because once I name them it's a pain to go through the code as edit stuff.
 
 process create_seurat_object {
@@ -60,13 +62,12 @@ process qc_filtering {
 
 dir2 = '$PATH/SCGA/2_inputs.json'
 
-workflow {    
-    create_seurat_object(dir)
+workflow {   
+    dir.view() 
+    // create_seurat_object(dir)
     // qc_in = Channel.of( [create_seurat_object.out.seurat_out, dir2] ) 
     // qc_filtering( qc_in )
 }
-
-
 
 
 
