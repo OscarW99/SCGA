@@ -39,7 +39,7 @@ process create_seurat_object {
 
 dir = '$PATH/SCGA/nextflow/bin/data'
 
-# todo - test this script
+// todo - test this script
 process qc_filtering {
     publishDir '$PATH/SCGA/nextflow/bin/publishDir', pattern: '*.{png/pdf}'
 
