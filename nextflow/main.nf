@@ -39,7 +39,7 @@ process create_seurat_object {
         """
 }
 
-// dir = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/data'
+dir = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/data'
 
 // // todo - test this script
 // process qc_filtering {
