@@ -34,7 +34,9 @@ parser$add_argument("-d", "--data_directory", type="character", dest="data_direc
 args <- parser$parse_args()
 data_directory <- args$data_directory
 
-
+print('print')
+message('message')
+system('system')
 
 # Import libraries
 library(Seurat)
