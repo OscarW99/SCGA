@@ -39,33 +39,33 @@ process create_seurat_object {
         """
 }
 
-dir = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/data'
+// dir = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/nextflow/bin/data'
 
-// todo - test this script
-process qc_filtering {
-    publishDir '$PATH/SCGA/nextflow/bin/publishDir', pattern: '*.{png/pdf}'
+// // todo - test this script
+// process qc_filtering {
+//     publishDir '$PATH/SCGA/nextflow/bin/publishDir', pattern: '*.{png/pdf}'
 
-    input:
-        tuple val(seurat_object_path), val(parameter_file)
+//     input:
+//         tuple val(seurat_object_path), val(parameter_file)
 
-    output:
-        path '*.png', emit: png_figs
-        path '*.pdf', emit: pdf_figs
-        path 'output.json', emit: json_out
-        path '*.Rda', emit: seurat_out
+//     output:
+//         path '*.png', emit: png_figs
+//         path '*.pdf', emit: pdf_figs
+//         path 'output.json', emit: json_out
+//         path '*.Rda', emit: seurat_out
 
-    script:
-        """
-        Rscript ${workflow.projectDir}/bin/initial_prep_and_QC/2_qc_filtering.R -so '$seurat_object_path' -pf '$parameter_file'
-        """
-}
+//     script:
+//         """
+//         Rscript ${workflow.projectDir}/bin/initial_prep_and_QC/2_qc_filtering.R -so '$seurat_object_path' -pf '$parameter_file'
+//         """
+// }
 
-dir2 = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/2_inputs.json'
+// dir2 = '/ahg/regevdata/projects/lungCancerBueno/Results/10x_nsclc_41421/data/PRIV_GITHUB/SCGA/2_inputs.json'
 
 workflow {   
     create_seurat_object(dir)
-    qc_in = Channel.of( [create_seurat_object.out.seurat_out, dir2] ) 
-    qc_filtering( qc_in )
+    // qc_in = Channel.of( [create_seurat_object.out.seurat_out, dir2] ) 
+    // qc_filtering( qc_in )
 }
 
 
